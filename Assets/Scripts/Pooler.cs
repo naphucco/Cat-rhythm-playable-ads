@@ -7,9 +7,9 @@ using UnityEngine;
 /// Uses a Coroutine to stagger the instantiation process across multiple frames,
 /// completely eliminating startup CPU performance spikes.
 /// </summary>
-public class MultiCandyPooler : MonoBehaviour
+public class Pooler : MonoBehaviour
 {
-    public static MultiCandyPooler Instance;
+    public static Pooler Instance;
 
     [System.Serializable]
     public struct PoolConfig

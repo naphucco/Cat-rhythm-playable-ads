@@ -31,7 +31,7 @@ public class CandyMover : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        float currentSongTimer = NoteSpawner.Instance != null ? NoteSpawner.Instance.SongTimer : Time.time;
+        float currentSongTimer = RhythmController.Instance != null ? RhythmController.Instance.SongTimer : Time.time;
 
         float totalDuration = targetArrivalTime - spawnSongTime;
         if (totalDuration <= 0f) return;

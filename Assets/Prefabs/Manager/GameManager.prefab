@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5775322368987707933}
   - component: {fileID: 2374829854622134987}
   m_Layer: 0
-  m_Name: SpawnerManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,9 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266acfe1fdaa428418ddecf2d9c36fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoteSpawner
+  autoStart: 1
   songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
-  songAudioSource: {fileID: 0}
+  hitLineY: -3.5
   laneConfigs:
   - pid: 0
     laneTransform: {fileID: 0}
