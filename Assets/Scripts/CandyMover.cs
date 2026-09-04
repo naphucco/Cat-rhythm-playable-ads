@@ -13,12 +13,12 @@ public class CandyMover : MonoBehaviour
     private bool isInitialized = false;
 
     /// <summary>
-    /// Initializes the candy movement parameters upon spawning.
+    /// Initializes the candy movement parameters upon spawning with a fixed travel duration.
     /// </summary>
-    public void Initialize(float ta, float currentSongTime, Vector3 spawnPosition, float hitLineY)
+    public void Initialize(float ta, float currentSongTime, Vector3 spawnPosition, float hitLineY, float advanceTime)
     {
         targetArrivalTime = ta;
-        spawnSongTime = currentSongTime;
+        spawnSongTime = ta - advanceTime;
 
         transform.position = spawnPosition;
         startY = spawnPosition.y;
@@ -31,7 +31,6 @@ public class CandyMover : MonoBehaviour
     {
         if (!isInitialized) return;
 
-        // Fetch the synchronized song timer from NoteSpawner instead of independent Time.time
         float currentSongTimer = NoteSpawner.Instance != null ? NoteSpawner.Instance.SongTimer : Time.time;
 
         float totalDuration = targetArrivalTime - spawnSongTime;

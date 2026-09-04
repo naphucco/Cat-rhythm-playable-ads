@@ -19,7 +19,7 @@ public class NoteSpawner : MonoBehaviour
     [Header("Spawn Settings")]
     [Tooltip("Time offset in seconds before 'ta' to spawn the candy so it travels to the hit line.")]
     [SerializeField] private float spawnInAdvanceTime = 2.0f;
-    
+
     [Tooltip("Y coordinate of the judgment/hit line where candies should arrive.")]
     [SerializeField] private float hitLineY = -3.5f;
 
@@ -71,7 +71,7 @@ public class NoteSpawner : MonoBehaviour
 
         string wrappedJson = "{\"notes\":" + jsonChartFile.text + "}";
         SongChart chart = JsonUtility.FromJson<SongChart>(wrappedJson);
-        
+
         if (chart != null && chart.notes != null)
         {
             allNotes = chart.notes;
@@ -90,12 +90,8 @@ public class NoteSpawner : MonoBehaviour
             yield return null;
         }
 
-        if (songAudioSource != null)
-        {
-            songAudioSource.Play();
-        }
-
-        songTimer = 0f;
+        // Initialize songTimer with a negative offset to allow a smooth lead-in intro
+        songTimer = -spawnInAdvanceTime;
         isPlaying = true;
     }
 
@@ -103,10 +99,20 @@ public class NoteSpawner : MonoBehaviour
     {
         if (!isPlaying || allNotes == null) return;
 
+        float previousTimer = songTimer;
         songTimer += Time.deltaTime;
 
-        // Drift correction: smooth re-sync with audio time only when drift is significant
-        if (songAudioSource != null && songAudioSource.isPlaying)
+        // Trigger audio source precisely when the countdown reaches 0
+        if (previousTimer < 0f && songTimer >= 0f)
+        {
+            if (songAudioSource != null)
+            {
+                songAudioSource.Play();
+            }
+        }
+
+        // Drift correction: smooth re-sync with audio time only when playing and drift is significant
+        if (songAudioSource != null && songAudioSource.isPlaying && songTimer >= 0f)
         {
             float audioTime = songAudioSource.time;
             float drift = audioTime - songTimer;
@@ -141,13 +147,13 @@ public class NoteSpawner : MonoBehaviour
         Vector3 spawnPosition = laneTransforms[laneIndex].position;
 
         GameObject candy = MultiCandyPooler.Instance.GetCandy(candyID, spawnPosition, Quaternion.identity);
-        
+
         if (candy != null)
         {
             var mover = candy.GetComponent<CandyMover>();
             if (mover != null)
             {
-                mover.Initialize(note.ta, songTimer, spawnPosition, hitLineY);
+                mover.Initialize(note.ta, songTimer, spawnPosition, hitLineY, spawnInAdvanceTime);
             }
         }
     }
@@ -162,16 +168,16 @@ public class NoteSpawner : MonoBehaviour
 
         if (pid == 0 || pid == 2)
         {
-            if (isLong) return PooType.Candy1_Long;       
-            return isStrong ? PooType.Candy1_Strong : PooType.Candy1_Normal;    
+            if (isLong) return PooType.Candy1_Long;
+            return isStrong ? PooType.Candy1_Strong : PooType.Candy1_Normal;
         }
         else if (pid == 3 || pid == 5)
         {
-            if (isLong) return PooType.Candy2_Long;       
-            return isStrong ? PooType.Candy2_Strong : PooType.Candy2_Normal;    
+            if (isLong) return PooType.Candy2_Long;
+            return isStrong ? PooType.Candy2_Strong : PooType.Candy2_Normal;
         }
 
-        return PooType.Lollipop_Long; 
+        return PooType.Lollipop_Long;
     }
 
     /// <summary>
