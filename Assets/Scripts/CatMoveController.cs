@@ -32,8 +32,8 @@ public class CatMoveController : MonoBehaviour
                 currentLaneIndex = 0;
                 
                 // Set initial position matching the first assigned lane X, keeping Y and Z locked
-                Vector3 startPos = new Vector3(assignedLaneXPositions[currentLaneIndex], initialY, initialZ);
-                transform.position = startPos;
+                // Vector3 startPos = new Vector3(assignedLaneXPositions[currentLaneIndex], initialY, initialZ);
+                // transform.position = startPos;
             }
         }
     }
