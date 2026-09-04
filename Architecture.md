@@ -51,3 +51,7 @@ Assets/
 │   ├── Gameplay/
 │   └── Spawner/
 └── Settings/
+```
+
+## 4. Optimize
+Playable Ads: Instead of splitting the content into multiple separate scenes—which wastes time on transitions or loading when running on the web—you can implement all these screens within a single scene by toggling the corresponding UI Canvas Groups based on the GameManager's current state.
