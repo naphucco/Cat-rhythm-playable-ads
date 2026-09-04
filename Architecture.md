@@ -35,7 +35,7 @@ A WebGL rhythm-based casual game developed in Unity (URP 2D) where players contr
 
 ---
 
-## 3. Project Structure (Unity URP)
+## 3. Project Structure
 ```text
 Assets/
 ├── Animations/
@@ -45,13 +45,22 @@ Assets/
 ├── Audio/
 ├── Data/
 │   └── JsonMidi_BabyMonster.json
+├── Materials/
+├── Prefabs/
+│   ├── Candies/
+│   └── UI/
 ├── Scenes/
 ├── Scripts/
-│   ├── Core/
-│   ├── Gameplay/
-│   └── Spawner/
+│   ├── Core/         # GameManager, AudioMaster
+│   ├── Gameplay/     # CatController, CandyItem
+│   ├── Spawner/      # NoteSpawner, JsonParser
+│   └── UI/           # HUDManager, EndCardUI
 └── Settings/
 ```
 
 ## 4. Optimize
 Playable Ads: Instead of splitting the content into multiple separate scenes—which wastes time on transitions or loading when running on the web—you can implement all these screens within a single scene by toggling the corresponding UI Canvas Groups based on the GameManager's current state.
+
+Avoid UniRx: For optimizing file size for WebGL/Playable Ads: Playable Ads require the smallest possible build size and lightning-fast load times. Including a heavy reactive programming library like UniRx—solely to wait for an `IsInitialized` variable—is unnecessary.
+
+Asset Optimization: Use sprite Atlas V2 utilized for texture packing to reduce draw calls and memory overhead in WebGL/Playable Ads builds.
