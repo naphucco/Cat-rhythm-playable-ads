@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Utility class responsible for parsing raw JSON chart files into sorted collections of note data.
+/// Utility class responsible for parsing raw JSON chart files into sorted collections of note data using dynamic SongSettings mapping.
 /// </summary>
 public static class ChartLoader
 {
     /// <summary>
-    /// Parses a JSON TextAsset into a sorted list of NoteData structures ordered chronologically by arrival time (ta).
+    /// Parses a JSON TextAsset into a sorted list of NoteData structures with mapped sequential lane indices based on SongSettings.
     /// </summary>
-    public static List<NoteData> LoadAndSortChart(TextAsset jsonChartFile)
+    public static List<NoteData> LoadAndSortChart(TextAsset jsonChartFile, SongSettings settings)
     {
         if (jsonChartFile == null)
         {
@@ -17,7 +17,12 @@ public static class ChartLoader
             return null;
         }
 
-        // Wrap the raw JSON array string into an object container compatible with Unity's JsonUtility
+        if (settings == null)
+        {
+            Debug.LogError("[ChartLoader] SongSettings asset is required for mapping chart PIDs.");
+            return null;
+        }
+
         string wrappedJson = "{\"notes\":" + jsonChartFile.text + "}";
         SongChart chart = JsonUtility.FromJson<SongChart>(wrappedJson);
 
@@ -29,10 +34,16 @@ public static class ChartLoader
 
         List<NoteData> notes = chart.notes;
         
+        // Map raw JSON PIDs to clean sequential lane indices using SongSettings configuration
+        foreach (var note in notes)
+        {
+            note.pid = settings.GetLaneIndex(note.pid);
+        }
+
         // Sort notes strictly by their arrival timing (ta) to guarantee accurate sequential processing
         notes.Sort((a, b) => a.ta.CompareTo(b.ta));
         
-        Debug.Log($"[ChartLoader] Successfully loaded and sorted {notes.Count} notes from chart.");
+        Debug.Log($"[ChartLoader] Successfully loaded, mapped, and sorted {notes.Count} notes from chart.");
         return notes;
     }
 }

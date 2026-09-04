@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: SongSettings
   m_EditorClassIdentifier: Assembly-CSharp::SongSettings
   spawnInAdvanceTime: 2
-  hitLineY: -3.5
   longNoteThreshold: 0.2
   strongVelocityThreshold: 110
+  pidMappings:
+  - jsonPid: 0
+    laneIndex: 0
+  - jsonPid: 2
+    laneIndex: 1
+  - jsonPid: 3
+    laneIndex: 2
+  - jsonPid: 5
+    laneIndex: 3

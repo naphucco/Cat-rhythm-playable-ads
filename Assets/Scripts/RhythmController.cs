@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Manages the rhythm game's core execution loop, using decoupled C# events for audio playback triggers.
+/// Manages the rhythm game's core execution loop, note spawning, and integrates with LaneManager for lane positioning.
 /// </summary>
 public class RhythmController : MonoBehaviour
 {
@@ -24,16 +24,9 @@ public class RhythmController : MonoBehaviour
     [Tooltip("Y coordinate of the judgment/hit line where candies should arrive (scene/layout specific).")]
     [SerializeField] private float hitLineY = -3.5f;
 
-    [Header("Scene Lane Setup")]
-    [Tooltip("Direct mapping configuration linking MIDI PID values to their respective scene world transforms.")]
-    [SerializeField]
-    private List<LaneConfig> laneConfigs = new List<LaneConfig>
-    {
-        new LaneConfig { pid = 0 },
-        new LaneConfig { pid = 2 },
-        new LaneConfig { pid = 3 },
-        new LaneConfig { pid = 5 }
-    };
+    [Header("Lane Mapping Rules")]
+    [Tooltip("Define which lane indices correspond to Cat 1 (left) vs Cat 2 (right) for candy type resolution.")]
+    [SerializeField] private int cat1MaxLaneIndex = 1; // Lanes 0 and 1 belong to Cat 1
 
     private List<NoteData> allNotes = new List<NoteData>();
     private int currentIndex = 0;
@@ -72,11 +65,12 @@ public class RhythmController : MonoBehaviour
     {
         if (songSettings == null)
         {
-            Debug.LogError("[NoteSpawner] SongSettings asset is not assigned in the inspector!");
+            Debug.LogError("[RhythmController] SongSettings asset is not assigned in the inspector!");
             return;
         }
 
-        allNotes = ChartLoader.LoadAndSortChart(jsonChartFile);
+        // Pass songSettings to ChartLoader so it uses the configurable PID mapping table
+        allNotes = ChartLoader.LoadAndSortChart(jsonChartFile, songSettings);
 
         if (autoStart)
         {
@@ -139,15 +133,19 @@ public class RhythmController : MonoBehaviour
 
     private void SpawnNote(NoteData note)
     {
-        PooType candyID = ResolveCandyID(note.pid, note.v, note.d);
-        Transform laneTransform = GetLaneTransform(note.pid);
+        // Note.pid from JSON is treated directly as the global lane index in LaneManager
+        int laneIndex = note.pid;
+
+        // Fetch lane transform safely from LaneManager
+        Transform laneTransform = GetLaneTransform(laneIndex);
 
         if (laneTransform == null)
         {
-            Debug.LogWarning($"[NoteSpawner] Invalid or missing lane transform configuration for PID: {note.pid}");
+            Debug.LogWarning($"[RhythmController] Invalid or missing lane transform configuration for lane index: {laneIndex}");
             return;
         }
 
+        PooType candyID = ResolveCandyID(laneIndex, note.v, note.d);
         Vector3 spawnPosition = laneTransform.position;
         GameObject candy = Pooler.Instance.GetCandy(candyID, spawnPosition, Quaternion.identity);
 
@@ -161,33 +159,39 @@ public class RhythmController : MonoBehaviour
         }
     }
 
-    private PooType ResolveCandyID(int pid, int velocity, float duration)
+    private PooType ResolveCandyID(int laneIndex, int velocity, float duration)
     {
         bool isLong = duration > songSettings.longNoteThreshold;
         bool isStrong = velocity > songSettings.strongVelocityThreshold;
 
-        if (pid == 0 || pid == 2)
+        // Determine if the note belongs to Cat 1 (left) or Cat 2 (right) based on lane index
+        if (laneIndex <= cat1MaxLaneIndex)
         {
             if (isLong) return PooType.Candy1_Long;
             return isStrong ? PooType.Candy1_Strong : PooType.Candy1_Normal;
         }
-        else if (pid == 3 || pid == 5)
+        else
         {
             if (isLong) return PooType.Candy2_Long;
             return isStrong ? PooType.Candy2_Strong : PooType.Candy2_Normal;
         }
-
-        return PooType.Lollipop_Long;
     }
 
-    private Transform GetLaneTransform(int pid)
+    private Transform GetLaneTransform(int laneIndex)
     {
-        foreach (var config in laneConfigs)
+        if (LaneManager.Instance != null)
         {
-            if (config.pid == pid) return config.laneTransform;
+            // Use LaneManager slice or direct lookup method if available, or fetch via a custom helper
+            // Assuming LaneManager has a public helper to get Transform by index:
+            // (Let's fetch it cleanly using GetLaneSlice with count = 1)
+            Transform[] slice = LaneManager.Instance.GetLaneSlice(laneIndex, 1);
+            if (slice != null && slice.Length > 0)
+            {
+                return slice[0];
+            }
         }
 
-        return laneConfigs.Count > 0 ? laneConfigs[0].laneTransform : null;
+        return null;
     }
 
     public void TriggerWin()

@@ -523,33 +523,11 @@ Transform:
   - {fileID: 1310279889}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1481416297 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1319443513305965773, guid: b260ec742969903499557347c41ba50b, type: 3}
-  m_PrefabInstance: {fileID: 3953383110405805452}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1639672335 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
   m_PrefabInstance: {fileID: 3953383110405805452}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1639672338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481416297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65e8356ae7ef42b4fa6bc42dbfafa98a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LaneManager
-  allLanes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &1831742410
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,10 +651,6 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: hitLineY
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: laneConfigs.Array.data[0].laneTransform
       value: 
       objectReference: {fileID: 443660112}
@@ -732,13 +706,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: 'allLanes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 443660112}
+    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: 'allLanes.Array.data[1]'
+      value: 
+      objectReference: {fileID: 186158026}
+    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: 'allLanes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2015674541}
+    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: 'allLanes.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1310279889}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1319443513305965773, guid: b260ec742969903499557347c41ba50b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1639672338}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b260ec742969903499557347c41ba50b, type: 3}
 --- !u!1001 &6724421586962523345
 PrefabInstance:
