@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2931381589358150826}
   - component: {fileID: 5775322368987707933}
   - component: {fileID: 2374829854622134987}
+  - component: {fileID: 4342415825757706530}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -82,7 +83,7 @@ MonoBehaviour:
   autoStart: 1
   songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
-  hitLineY: -3.5
+  hitLineY: 0
   laneConfigs:
   - pid: 0
     laneTransform: {fileID: 0}
@@ -92,3 +93,20 @@ MonoBehaviour:
     laneTransform: {fileID: 0}
   - pid: 5
     laneTransform: {fileID: 0}
+--- !u!114 &4342415825757706530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319443513305965773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65e8356ae7ef42b4fa6bc42dbfafa98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LaneManager
+  allLanes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
