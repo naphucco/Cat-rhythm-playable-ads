@@ -79,12 +79,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266acfe1fdaa428418ddecf2d9c36fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoteSpawner
+  songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
   songAudioSource: {fileID: 0}
-  spawnInAdvanceTime: 2
-  hitLineY: -3.5
-  laneTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  laneConfigs:
+  - pid: 0
+    laneTransform: {fileID: 0}
+  - pid: 2
+    laneTransform: {fileID: 0}
+  - pid: 3
+    laneTransform: {fileID: 0}
+  - pid: 5
+    laneTransform: {fileID: 0}
