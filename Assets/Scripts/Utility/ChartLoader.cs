@@ -34,10 +34,10 @@ public static class ChartLoader
 
         List<NoteData> notes = chart.notes;
         
-        // Map raw JSON PIDs to clean sequential lane indices using SongSettings configuration
+        // Map raw JSON PIDs to clean sequential lane indices and assign to LaneIndex property
         foreach (var note in notes)
         {
-            note.pid = settings.GetLaneIndex(note.pid);
+            note.LaneIndex = settings.GetLaneIndex(note.pid);
         }
 
         // Sort notes strictly by their arrival timing (ta) to guarantee accurate sequential processing

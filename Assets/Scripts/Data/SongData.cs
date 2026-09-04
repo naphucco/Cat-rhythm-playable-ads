@@ -28,6 +28,9 @@ public class NoteData
 
     [Tooltip("Position ID / Lane ID determining the lane and cat assignment (e.g., 0, 2, 3, 5).")]
     public int pid;
+
+    // Clean property representing the resolved lane index for game logic
+    public int LaneIndex { get; set; }
 }
 
 /// <summary>

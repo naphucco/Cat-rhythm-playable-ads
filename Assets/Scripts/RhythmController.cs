@@ -69,7 +69,7 @@ public class RhythmController : MonoBehaviour
             return;
         }
 
-        // Pass songSettings to ChartLoader so it uses the configurable PID mapping table
+        // Pass songSettings to ChartLoader to map raw PIDs to clean lane indices
         allNotes = ChartLoader.LoadAndSortChart(jsonChartFile, songSettings);
 
         if (autoStart)
@@ -133,20 +133,13 @@ public class RhythmController : MonoBehaviour
 
     private void SpawnNote(NoteData note)
     {
-        // Note.pid from JSON is treated directly as the global lane index in LaneManager
-        int laneIndex = note.pid;
-
-        // Fetch lane transform safely from LaneManager
-        Transform laneTransform = GetLaneTransform(laneIndex);
-
-        if (laneTransform == null)
-        {
-            Debug.LogWarning($"[RhythmController] Invalid or missing lane transform configuration for lane index: {laneIndex}");
-            return;
-        }
+        int laneIndex = note.LaneIndex;
 
         PooType candyID = ResolveCandyID(laneIndex, note.v, note.d);
-        Vector3 spawnPosition = laneTransform.position;
+
+        // Fetch spawn position at the top of the screen aligned with the correct lane X
+        Vector3 spawnPosition = LaneManager.Instance.GetSpawnPosition(laneIndex);
+
         GameObject candy = Pooler.Instance.GetCandy(candyID, spawnPosition, Quaternion.identity);
 
         if (candy != null)
@@ -164,7 +157,7 @@ public class RhythmController : MonoBehaviour
         bool isLong = duration > songSettings.longNoteThreshold;
         bool isStrong = velocity > songSettings.strongVelocityThreshold;
 
-        // Determine if the note belongs to Cat 1 (left) or Cat 2 (right) based on lane index
+        // Determine if the note belongs to Cat 1 (left) or Cat 2 (right) using clean lane index
         if (laneIndex <= cat1MaxLaneIndex)
         {
             if (isLong) return PooType.Candy1_Long;
@@ -175,23 +168,6 @@ public class RhythmController : MonoBehaviour
             if (isLong) return PooType.Candy2_Long;
             return isStrong ? PooType.Candy2_Strong : PooType.Candy2_Normal;
         }
-    }
-
-    private Transform GetLaneTransform(int laneIndex)
-    {
-        if (LaneManager.Instance != null)
-        {
-            // Use LaneManager slice or direct lookup method if available, or fetch via a custom helper
-            // Assuming LaneManager has a public helper to get Transform by index:
-            // (Let's fetch it cleanly using GetLaneSlice with count = 1)
-            Transform[] slice = LaneManager.Instance.GetLaneSlice(laneIndex, 1);
-            if (slice != null && slice.Length > 0)
-            {
-                return slice[0];
-            }
-        }
-
-        return null;
     }
 
     public void TriggerWin()

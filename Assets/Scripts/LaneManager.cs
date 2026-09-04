@@ -2,45 +2,61 @@ using UnityEngine;
 
 public class LaneManager : MonoBehaviour
 {
-    [Header("Lane Setup (Ordered left to right)")]
-    [SerializeField] private Transform[] allLanes; // Array of all lanes in the scene
+    [Header("Lane Viewport Setup (X ranges from 0.0 to 1.0 across the screen)")]
+    [Tooltip("Normalized horizontal positions (0 to 1) for each lane across the screen width.")]
+    [SerializeField] private float[] laneViewportX = new float[] { 0.2f, 0.4f, 0.6f, 0.8f };
 
+    [Header("Vertical Heights Setup")]
+    [Tooltip("Viewport Y position where candies spawn (1.0 is the top edge of the screen).")]
+    [SerializeField] private float spawnViewportY = 1.05f;
+
+    private Camera mainCamera;
     public static LaneManager Instance { get; private set; }
 
     void Awake()
     {
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        mainCamera = Camera.main;
     }
 
     /// <summary>
-    /// Returns a subset of lanes for a specific cat based on array slicing (index range)
+    /// Returns an array of calculated World X positions for a specific subset of lanes (for cats)
     /// </summary>
-    public Transform[] GetLaneSlice(int startIndex, int count)
+    public float[] GetLaneXSlice(int startIndex, int count)
     {
-        if (allLanes == null || count <= 0) return new Transform[0];
+        if (laneViewportX == null || count <= 0) return new float[0];
 
-        startIndex = Mathf.Clamp(startIndex, 0, allLanes.Length);
-        count = Mathf.Clamp(count, 0, allLanes.Length - startIndex);
+        startIndex = Mathf.Clamp(startIndex, 0, laneViewportX.Length);
+        count = Mathf.Clamp(count, 0, laneViewportX.Length - startIndex);
 
-        Transform[] slice = new Transform[count];
-        System.Array.Copy(allLanes, startIndex, slice, 0, count);
+        float[] slice = new float[count];
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(laneViewportX[startIndex + i], 0f, -mainCamera.transform.position.z));
+            slice[i] = worldPos.x;
+        }
         return slice;
     }
 
     /// <summary>
-    /// Finds the index of the closest lane among the given subset
+    /// Finds the index of the closest lane among the given world X positions subset
     /// </summary>
-    public int GetClosestLaneIndex(Transform[] lanes, float worldX)
+    public int GetClosestLaneIndex(float[] laneXPositions, float worldX)
     {
-        if (lanes == null || lanes.Length == 0) return 0;
+        if (laneXPositions == null || laneXPositions.Length == 0) return 0;
 
         int closestIndex = 0;
-        float minDistance = Mathf.Abs(lanes[0].position.x - worldX);
+        float minDistance = Mathf.Abs(laneXPositions[0] - worldX);
 
-        for (int i = 1; i < lanes.Length; i++)
+        for (int i = 1; i < laneXPositions.Length; i++)
         {
-            float distance = Mathf.Abs(lanes[i].position.x - worldX);
+            float distance = Mathf.Abs(laneXPositions[i] - worldX);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -52,14 +68,18 @@ public class LaneManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Gets the world X coordinate of a lane by its direct global index (used for NoteSpawner matching JSON data)
+    /// Gets the dynamic world spawn position at the top of the screen for a specific lane index
     /// </summary>
-    public float GetLaneX(int laneIndex)
+    public Vector3 GetSpawnPosition(int laneIndex)
     {
-        if (allLanes != null && laneIndex >= 0 && laneIndex < allLanes.Length)
+        if (laneViewportX != null && laneIndex >= 0 && laneIndex < laneViewportX.Length)
         {
-            return allLanes[laneIndex].position.x;
+            // Map lane X and top screen Viewport Y to world coordinates
+            Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(laneViewportX[laneIndex], spawnViewportY, -mainCamera.transform.position.z));
+            worldPos.z = 0f;
+            return worldPos;
         }
-        return 0f;
+
+        return Vector3.zero;
     }
 }
