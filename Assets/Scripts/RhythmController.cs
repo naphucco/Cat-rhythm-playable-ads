@@ -108,7 +108,15 @@ public class RhythmController : MonoBehaviour
         if (!isPlaying || isGameEnded || allNotes == null || songSettings == null) return;
 
         float previousTimer = songTimer;
-        songTimer += Time.deltaTime;
+
+        if (AudioManager.Instance != null && AudioManager.Instance.IsPlaying)
+        {
+            songTimer = AudioManager.Instance.CurrentAudioTime;
+        }
+        else
+        {
+            songTimer += Time.deltaTime;
+        }
 
         // Trigger audio playback request via event when intro countdown reaches zero
         if (previousTimer < 0f && songTimer >= 0f)

@@ -69,6 +69,7 @@ Assets/
 
 ## 4. Playable Ads Optimization Strategies
 
-* **Single-Scene Architecture**: All game states (`MainMenu`, `Playing`, `GameOver`, `Victory`) are contained within a single scene, toggling UI Canvas Groups dynamically to eliminate loading screens and transition lags critical for instant-play web environments.
-* **Lightweight Codebase (No Heavy Frameworks)**: Avoids heavy reactive programming libraries (like UniRx) to maintain a minimal build size and ultra-fast WebGL initialization times.
-* **Asset Optimization**: Utilizes Sprite Atlas V2 for texture packing to reduce draw calls, memory overhead, and file size footprint for WebGL/Playable Ads deployment.
+* Single-Scene Architecture: All game states (`MainMenu`, `Playing`, `GameOver`, `Victory`) are contained within a single scene, toggling UI Canvas Groups dynamically to eliminate loading screens and transition lags critical for instant-play web environments.
+* Lightweight Codebase (No Heavy Frameworks): Avoids heavy reactive programming libraries (like UniRx) to maintain a minimal build size and ultra-fast WebGL initialization times.
+* Asset Optimization: Utilizes Sprite Atlas V2 for texture packing to reduce draw calls, memory overhead, and file size footprint for WebGL/Playable Ads deployment.
+* Object Pooling: Utilizes a multi-type object pool (Pooler) with automated lifecycle management and queue recycling to handle candy instances efficiently without runtime performance spikes.
