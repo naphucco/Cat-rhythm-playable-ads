@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3109919118630337825}
   - component: {fileID: 2372890896015514196}
   - component: {fileID: 2799132397110346016}
+  - component: {fileID: 730906870493300065}
   m_Layer: 0
   m_Name: CatRight
   m_TagString: Untagged
@@ -148,3 +149,31 @@ MonoBehaviour:
   laneCount: 2
   snapSpeed: 20
   catVisualOffsetY: -1
+--- !u!114 &730906870493300065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494958919490901500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc6641ecabb2fc419c1b4569544ba6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CatAnimationController
+  isCat1: 0
+  maxLaneIndex: 1
+  startAnims:
+  - Idle_Start
+  eatAnims:
+  - Eating_Single_Object
+  - Eating_Single_Object_2
+  missAnims:
+  - Miss_Object_Lose_2
+  victoryAnims:
+  - Cheering_Happy _Victory
+  idleAnims:
+  - Idle_Hungry
+  - Idle_Liemchan
+  - Idle_Playing
+  - Idle_Yawn

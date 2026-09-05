@@ -39,6 +39,10 @@ public class RhythmController : MonoBehaviour
     public event Action OnGameWin;
     public event Action OnGameLose;
 
+    // Expose public events for hit and miss notifications
+    public event Action<int> OnNoteHitEvent;
+    public event Action<int> OnNoteMissEvent;
+
     /// <summary>
     /// Exposes the synchronized song timer publicly for external components.
     /// </summary>
@@ -192,8 +196,8 @@ public class RhythmController : MonoBehaviour
     /// </summary>
     public void RegisterHit(int laneIndex)
     {
-        // TODO: Add score calculation, combo updates, and "Tasty!" audio/VFX feedback here
         Debug.Log($"[GamePlay] HIT at lane: {laneIndex}");
+        OnNoteHitEvent?.Invoke(laneIndex);
     }
 
     /// <summary>
@@ -201,8 +205,8 @@ public class RhythmController : MonoBehaviour
     /// </summary>
     public void RegisterMiss(int laneIndex)
     {
-        // TODO: Add combo reset, penalty, and miss feedback here
         Debug.Log($"[GamePlay] MISS at lane: {laneIndex}");
+        OnNoteMissEvent?.Invoke(laneIndex);
     }
 
     /// <summary>
