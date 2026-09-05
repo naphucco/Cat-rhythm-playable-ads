@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using DG.Tweening;
 
 /// <summary>
 /// Manages score tracking and UI updates by subscribing to RhythmController hit events.
@@ -15,13 +16,27 @@ public class ScoreManager : MonoBehaviour
     [Tooltip("Optional UI Text component to display the current score.")]
     [SerializeField] private TextMeshProUGUI scoreText;
 
+    [Header("Score Animation Settings")]
+    [Tooltip("Scale multiplier when the score updates.")]
+    [SerializeField] private float punchScaleAmount = 0.2f;
+    [Tooltip("Duration of the scale animation.")]
+    [SerializeField] private float animationDuration = 0.2f;
+
     private int currentScore = 0;
     public int CurrentScore => currentScore;
+
+    // Lưu lại kích thước gốc của UI text để tween xong trả về đúng cỡ cũ
+    private Vector3 originalScale = Vector3.one;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
+
+        if (scoreText != null)
+        {
+            originalScale = scoreText.transform.localScale;
+        }
     }
 
     private void OnEnable()
@@ -62,6 +77,10 @@ public class ScoreManager : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.text = currentScore.ToString();
+
+            scoreText.transform.DOKill(true);
+            scoreText.transform.DOScale(originalScale * (1f + punchScaleAmount), animationDuration / 2f)
+                .SetLoops(2, LoopType.Yoyo);
         }
     }
 }
