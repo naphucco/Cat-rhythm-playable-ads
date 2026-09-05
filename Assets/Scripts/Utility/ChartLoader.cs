@@ -43,7 +43,7 @@ public static class ChartLoader
         // Sort notes strictly by their arrival timing (ta) to guarantee accurate sequential processing
         notes.Sort((a, b) => a.ta.CompareTo(b.ta));
         
-        Debug.Log($"[ChartLoader] Successfully loaded, mapped, and sorted {notes.Count} notes from chart.");
+        // Debug.Log($"[ChartLoader] Successfully loaded, mapped, and sorted {notes.Count} notes from chart.");
         return notes;
     }
 }

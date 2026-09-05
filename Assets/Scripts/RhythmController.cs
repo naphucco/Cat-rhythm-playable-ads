@@ -159,9 +159,10 @@ public class RhythmController : MonoBehaviour
                 float hitLineY = LaneManager.Instance != null ? LaneManager.Instance.HitLineY : -3.5f;
 
                 mover.Initialize(
+                    candyID,
                     note.ta,
                     spawnPosition,
-                    hitLineY, // Lấy trực tiếp từ LaneManager chung
+                    hitLineY,
                     missY,
                     songSettings.noteTravelTime,
                     note.LaneIndex
@@ -196,7 +197,7 @@ public class RhythmController : MonoBehaviour
     /// </summary>
     public void RegisterHit(int laneIndex)
     {
-        Debug.Log($"[GamePlay] HIT at lane: {laneIndex}");
+        // Debug.Log($"[GamePlay] HIT at lane: {laneIndex}");
         OnNoteHitEvent?.Invoke(laneIndex);
     }
 
@@ -205,7 +206,7 @@ public class RhythmController : MonoBehaviour
     /// </summary>
     public void RegisterMiss(int laneIndex)
     {
-        Debug.Log($"[GamePlay] MISS at lane: {laneIndex}");
+        // Debug.Log($"[GamePlay] MISS at lane: {laneIndex}");
         OnNoteMissEvent?.Invoke(laneIndex);
     }
 

@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class CandyMover : MonoBehaviour
 {
+    private PooType candyId;
     private float targetArrivalTime;
     private float spawnSongTime;
     private float startY;
@@ -15,8 +16,9 @@ public class CandyMover : MonoBehaviour
     private bool isInitialized = false;
     private bool hasPassedHitLine = false;
 
-    public void Initialize(float ta, Vector3 spawnPosition, float hitLineY, float missY, float travelTime, int laneIndex)
+    public void Initialize(PooType id, float ta, Vector3 spawnPosition, float hitLineY, float missY, float travelTime, int laneIndex)
     {
+        candyId = id;
         targetArrivalTime = ta;
         spawnSongTime = ta - travelTime;
 
@@ -50,7 +52,15 @@ public class CandyMover : MonoBehaviour
             {
                 RhythmController.Instance?.RegisterHit(laneIndex);
                 isInitialized = false;
-                gameObject.SetActive(false);
+                
+                if (Pooler.Instance != null)
+                {
+                    Pooler.Instance.ReturnCandy(candyId, gameObject);
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
                 return;
             }
         }
@@ -59,7 +69,15 @@ public class CandyMover : MonoBehaviour
         {
             RhythmController.Instance?.RegisterMiss(laneIndex);
             isInitialized = false;
-            gameObject.SetActive(false);
+            
+            if (Pooler.Instance != null)
+            {
+                Pooler.Instance.ReturnCandy(candyId, gameObject);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

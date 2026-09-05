@@ -108,7 +108,7 @@ MonoBehaviour:
   skeletonDataAsset: {fileID: 11400000, guid: 7e9a78196be04489fb82d1a1c140c797, type: 2}
   initialSkinName: Brown_Cat
   fixPrefabOverrideViaMeshFilter: 2
-  initialFlipX: 0
+  initialFlipX: 1
   initialFlipY: 0
   updateWhenInvisible: 3
   separatorSlotNames: []
@@ -161,8 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc6641ecabb2fc419c1b4569544ba6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CatAnimationController
-  isCat1: 0
-  maxLaneIndex: 1
   startAnims:
   - Idle_Start
   eatAnims:
@@ -177,3 +175,4 @@ MonoBehaviour:
   - Idle_Liemchan
   - Idle_Playing
   - Idle_Yawn
+  idleInterval: 3

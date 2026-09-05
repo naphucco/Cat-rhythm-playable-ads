@@ -175,3 +175,4 @@ MonoBehaviour:
   - Idle_Liemchan
   - Idle_Playing
   - Idle_Yawn
+  idleInterval: 3
