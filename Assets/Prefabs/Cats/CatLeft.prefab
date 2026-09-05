@@ -147,3 +147,4 @@ MonoBehaviour:
   laneStartIndex: 0
   laneCount: 2
   snapSpeed: 20
+  catVisualOffsetY: -1

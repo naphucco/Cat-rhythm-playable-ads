@@ -613,26 +613,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: hitLineY
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: laneConfigs.Array.data[0].laneTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: laneConfigs.Array.data[1].laneTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: laneConfigs.Array.data[2].laneTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: laneConfigs.Array.data[3].laneTransform
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -672,26 +652,6 @@ PrefabInstance:
     - target: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: spawnViewportY
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: 'allLanes.Array.data[0]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: 'allLanes.Array.data[1]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: 'allLanes.Array.data[2]'
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4342415825757706530, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: 'allLanes.Array.data[3]'
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

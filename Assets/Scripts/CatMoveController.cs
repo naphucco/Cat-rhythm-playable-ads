@@ -8,6 +8,9 @@ public class CatMoveController : MonoBehaviour
     [SerializeField] private int laneCount = 2;      // Number of lanes this cat can use (e.g., 2 lanes)
     [SerializeField] private float snapSpeed = 20f;   // Smooth transition speed for movement
 
+    [Header("Visual Adjustment")]
+    [SerializeField] private float catVisualOffsetY = -0.5f;
+
     private float[] assignedLaneXPositions;
     private Camera mainCamera;
     private bool isDragging = false;
@@ -53,7 +56,7 @@ public class CatMoveController : MonoBehaviour
 
         if (LaneManager.Instance != null)
         {
-            initialY = LaneManager.Instance.HitLineY;
+            initialY = LaneManager.Instance.HitLineY + catVisualOffsetY;
             assignedLaneXPositions = LaneManager.Instance.GetLaneXSlice(laneStartIndex, laneCount);
         }
     }

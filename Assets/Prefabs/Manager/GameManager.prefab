@@ -83,16 +83,8 @@ MonoBehaviour:
   autoStart: 1
   songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
-  hitLineY: 0
-  laneConfigs:
-  - pid: 0
-    laneTransform: {fileID: 0}
-  - pid: 2
-    laneTransform: {fileID: 0}
-  - pid: 3
-    laneTransform: {fileID: 0}
-  - pid: 5
-    laneTransform: {fileID: 0}
+  missViewportY: 0
+  cat1MaxLaneIndex: 1
 --- !u!114 &4342415825757706530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,8 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e8356ae7ef42b4fa6bc42dbfafa98a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaneManager
-  allLanes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  laneViewportX:
+  - 0.2
+  - 0.4
+  - 0.6
+  - 0.8
+  spawnViewportY: 1
+  hitLineViewportY: 0.3
