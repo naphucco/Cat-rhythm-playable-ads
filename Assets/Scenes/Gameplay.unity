@@ -249,7 +249,6 @@ Transform:
   - {fileID: 431518762}
   - {fileID: 1639672335}
   - {fileID: 718237060}
-  - {fileID: 832908175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
@@ -430,11 +429,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6062362246517229614, guid: 1eaf8d13af4da3a45b091e1202841c61, type: 3}
   m_PrefabInstance: {fileID: 6724421586962523345}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &832908175 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-  m_PrefabInstance: {fileID: 3240175695005406641}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &889878025
 GameObject:
@@ -1241,71 +1235,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -0.1586914}
   m_SizeDelta: {x: 0, y: -0.31739807}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &3240175695005406641
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 183283845}
-    m_Modifications:
-    - target: {fileID: 1683255739039940029, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: leftGuide
-      value: 
-      objectReference: {fileID: 1917037858}
-    - target: {fileID: 1683255739039940029, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: rightGuide
-      value: 
-      objectReference: {fileID: 975340377}
-    - target: {fileID: 4578599852829482948, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_Name
-      value: UIManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997474875165901588, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7397103e169cfff4b99e3016cf65e831, type: 3}
 --- !u!1001 &3953383110405805452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1358,6 +1287,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5059338443223842820, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: leftGuide
+      value: 
+      objectReference: {fileID: 1917037858}
+    - target: {fileID: 5059338443223842820, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: rightGuide
+      value: 
+      objectReference: {fileID: 975340377}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

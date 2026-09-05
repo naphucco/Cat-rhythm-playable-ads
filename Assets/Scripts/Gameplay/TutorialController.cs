@@ -3,10 +3,10 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 /// <summary>
-/// Controls tutorial prompt images moving back and forth, and fading out when the tutorial ends.
-/// Requires DOTween.
+/// Controls the tutorial sequence: listens for input to start the game, 
+/// animates guide images back and forth, and fades out when gameplay begins.
 /// </summary>
-public class TutorialGuideUI : MonoBehaviour
+public class TutorialController : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Left guide parent RectTransform containing image components.")]
@@ -41,7 +41,7 @@ public class TutorialGuideUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnPlayingStateEntered += FadeOutAndDisable;
+            GameManager.Instance.OnPlayingStateEntered += HandlePlayingStateEntered;
         }
 
         StartMovement();
@@ -51,11 +51,25 @@ public class TutorialGuideUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnPlayingStateEntered -= FadeOutAndDisable;
+            GameManager.Instance.OnPlayingStateEntered -= HandlePlayingStateEntered;
         }
 
         // Kill the sequence to prevent memory leaks
         pulseSequence?.Kill();
+    }
+
+    private void Update()
+    {
+        // Only check for input if the game is currently in the Tutorial state
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameManager.GameState.Tutorial)
+        {
+            // Detect mouse click or screen touch
+            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+            {
+                // Trigger state change and start the rhythm sequence
+                GameManager.Instance.StartPlaying();
+            }
+        }
     }
 
     private void StartMovement()
@@ -71,7 +85,7 @@ public class TutorialGuideUI : MonoBehaviour
         pulseSequence.Join(rightGuide.DOAnchorPosX(rightOriginalPos.x + moveDistance, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine));
     }
 
-    private void FadeOutAndDisable()
+    private void HandlePlayingStateEntered()
     {
         // Stop looping movement immediately
         pulseSequence?.Kill();
@@ -96,10 +110,12 @@ public class TutorialGuideUI : MonoBehaviour
             }
         }
 
-        // Deactivate object after fade finishes
         DOVirtual.DelayedCall(duration, () =>
         {
-            gameObject.SetActive(false);
+            if (leftGuide != null) leftGuide.gameObject.SetActive(false);
+            if (rightGuide != null) rightGuide.gameObject.SetActive(false);
+            
+            enabled = false;
         });
     }
 }

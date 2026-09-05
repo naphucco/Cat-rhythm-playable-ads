@@ -96,4 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f6cb65dc1ce27488e2cfaf61ad62f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialController
-  tutorialPanel: {fileID: 0}
+  leftGuide: {fileID: 0}
+  rightGuide: {fileID: 0}
+  moveDistance: 30
+  moveDuration: 0.6
+  fadeDuration: 0.4
