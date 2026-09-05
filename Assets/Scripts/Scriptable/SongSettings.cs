@@ -3,16 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SongSettings", menuName = "RhythmGame/Song Settings")]
 public class SongSettings : ScriptableObject
 {
-    [System.Serializable]
-    public struct PidMapping
-    {
-        public int jsonPid;       // PID value coming from the JSON chart (e.g., 0, 2, 3, 5)
-        public int laneIndex;     // Corresponding sequential lane index (e.g., 0, 1, 2, 3)
-    }
-
     [Header("Spawn Timing")]
     [Tooltip("Time offset in seconds before a note's arrival time ('ta') to spawn the candy so it travels to the hit line.")]
-    public float spawnInAdvanceTime = 2.0f;
+    public float noteTravelTime = 1.0f;
 
     [Header("Note Classification Thresholds")]
     [Tooltip("Minimum duration in seconds required to classify a note as a Long type candy.")]

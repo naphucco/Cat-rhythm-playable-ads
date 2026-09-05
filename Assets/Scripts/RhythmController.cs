@@ -20,13 +20,12 @@ public class RhythmController : MonoBehaviour
     [Tooltip("JSON TextAsset containing the exported MIDI song chart data.")]
     [SerializeField] private TextAsset jsonChartFile;
 
-    [Header("Spawn Positioning")]
-    [Tooltip("Y coordinate of the judgment/hit line where candies should arrive (scene/layout specific).")]
-    [SerializeField] private float hitLineY = -3.5f;
+    [Tooltip("Viewport Y position for the absolute bottom screen where missed candies disappear.")]
+    [SerializeField] private float missViewportY = 0.0f;
 
     [Header("Lane Mapping Rules")]
     [Tooltip("Define which lane indices correspond to Cat 1 (left) vs Cat 2 (right) for candy type resolution.")]
-    [SerializeField] private int cat1MaxLaneIndex = 1; // Lanes 0 and 1 belong to Cat 1
+    [SerializeField] private int cat1MaxLaneIndex = 1;
 
     private List<NoteData> allNotes = new List<NoteData>();
     private int currentIndex = 0;
@@ -94,7 +93,7 @@ public class RhythmController : MonoBehaviour
             yield return null;
         }
 
-        songTimer = -songSettings.spawnInAdvanceTime;
+        songTimer = -songSettings.noteTravelTime;
         currentIndex = 0;
         isPlaying = true;
         isGameEnded = false;
@@ -114,7 +113,7 @@ public class RhythmController : MonoBehaviour
         }
 
         // Look-ahead spawning window
-        while (currentIndex < allNotes.Count && allNotes[currentIndex].ta - songTimer <= songSettings.spawnInAdvanceTime)
+        while (currentIndex < allNotes.Count && allNotes[currentIndex].ta - songTimer <= songSettings.noteTravelTime)
         {
             SpawnNote(allNotes[currentIndex]);
             currentIndex++;
@@ -135,11 +134,17 @@ public class RhythmController : MonoBehaviour
     {
         int laneIndex = note.LaneIndex;
 
+        // Determine the visual prefab type based on lane index, velocity, and duration
         PooType candyID = ResolveCandyID(laneIndex, note.v, note.d);
 
         // Fetch spawn position at the top of the screen aligned with the correct lane X
         Vector3 spawnPosition = LaneManager.Instance.GetSpawnPosition(laneIndex);
 
+        // Calculate world Y coordinate of the absolute bottom screen for missed notes
+        Camera mainCam = Camera.main;
+        float missY = mainCam.ViewportToWorldPoint(new Vector3(0f, missViewportY, -mainCam.transform.position.z)).y;
+
+        // Request pooled candy instance
         GameObject candy = Pooler.Instance.GetCandy(candyID, spawnPosition, Quaternion.identity);
 
         if (candy != null)
@@ -147,11 +152,23 @@ public class RhythmController : MonoBehaviour
             var mover = candy.GetComponent<CandyMover>();
             if (mover != null)
             {
-                mover.Initialize(note.ta, songTimer, spawnPosition, hitLineY, songSettings.spawnInAdvanceTime);
+                float hitLineY = LaneManager.Instance != null ? LaneManager.Instance.HitLineY : -3.5f;
+
+                mover.Initialize(
+                    note.ta,
+                    spawnPosition,
+                    hitLineY, // Lấy trực tiếp từ LaneManager chung
+                    missY,
+                    songSettings.noteTravelTime,
+                    note.LaneIndex
+                );
             }
         }
     }
 
+    /// <summary>
+    /// Resolves which candy variant to instantiate based on lane assignment and note properties.
+    /// </summary>
     private PooType ResolveCandyID(int laneIndex, int velocity, float duration)
     {
         bool isLong = duration > songSettings.longNoteThreshold;
@@ -170,6 +187,27 @@ public class RhythmController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Callback executed when a candy is successfully caught by a cat at the hit line.
+    /// </summary>
+    public void RegisterHit(int laneIndex)
+    {
+        // TODO: Add score calculation, combo updates, and "Tasty!" audio/VFX feedback here
+        Debug.Log($"[GamePlay] HIT at lane: {laneIndex}");
+    }
+
+    /// <summary>
+    /// Callback executed when a candy passes the hit line without being caught and reaches the bottom.
+    /// </summary>
+    public void RegisterMiss(int laneIndex)
+    {
+        // TODO: Add combo reset, penalty, and miss feedback here
+        Debug.Log($"[GamePlay] MISS at lane: {laneIndex}");
+    }
+
+    /// <summary>
+    /// Triggers game win sequence and fires corresponding events.
+    /// </summary>
     public void TriggerWin()
     {
         if (isGameEnded) return;
@@ -180,6 +218,9 @@ public class RhythmController : MonoBehaviour
         OnGameWin?.Invoke();
     }
 
+    /// <summary>
+    /// Triggers game lose sequence and fires corresponding events.
+    /// </summary>
     public void TriggerLose()
     {
         if (isGameEnded) return;

@@ -10,6 +10,10 @@ public class LaneManager : MonoBehaviour
     [Tooltip("Viewport Y position where candies spawn (1.0 is the top edge of the screen).")]
     [SerializeField] private float spawnViewportY = 1.05f;
 
+    [Header("Layout Settings")]
+    [SerializeField] private float hitLineViewportY = 0.18f;
+    public float HitLineY { get; private set; }
+
     private Camera mainCamera;
     public static LaneManager Instance { get; private set; }
 
@@ -22,6 +26,8 @@ public class LaneManager : MonoBehaviour
             return;
         }
 
+        Camera mainCam = Camera.main;
+        HitLineY = mainCam.ViewportToWorldPoint(new Vector3(0f, hitLineViewportY, -mainCam.transform.position.z)).y;
         mainCamera = Camera.main;
     }
 
@@ -74,7 +80,6 @@ public class LaneManager : MonoBehaviour
     {
         if (laneViewportX != null && laneIndex >= 0 && laneIndex < laneViewportX.Length)
         {
-            // Map lane X and top screen Viewport Y to world coordinates
             Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(laneViewportX[laneIndex], spawnViewportY, -mainCamera.transform.position.z));
             worldPos.z = 0f;
             return worldPos;

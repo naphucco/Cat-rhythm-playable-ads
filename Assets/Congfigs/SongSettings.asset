@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a529458f4eb839548b395029ffe564ca, type: 3}
   m_Name: SongSettings
   m_EditorClassIdentifier: Assembly-CSharp::SongSettings
-  spawnInAdvanceTime: 2
+  noteTravelTime: 1
   longNoteThreshold: 0.2
   strongVelocityThreshold: 110
   pidMappings:

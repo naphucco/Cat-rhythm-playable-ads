@@ -1,28 +1,33 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles the precise movement of candies along the Y-axis from spawn to hit line,
-/// synchronized strictly with the song timer.
+/// Handles constant-speed movement along the Y-axis. Candy moves smoothly from spawn to missY,
+/// checking hit/miss precisely at targetArrivalTime without altering speed mid-air.
 /// </summary>
 public class CandyMover : MonoBehaviour
 {
     private float targetArrivalTime;
     private float spawnSongTime;
     private float startY;
-    private float targetY;
+    private float missY;
+    private float speed; 
+    private int laneIndex;
     private bool isInitialized = false;
+    private bool hasPassedHitLine = false;
 
-    /// <summary>
-    /// Initializes the candy movement parameters upon spawning with a fixed travel duration.
-    /// </summary>
-    public void Initialize(float ta, float currentSongTime, Vector3 spawnPosition, float hitLineY, float advanceTime)
+    public void Initialize(float ta, Vector3 spawnPosition, float hitLineY, float missY, float travelTime, int laneIndex)
     {
         targetArrivalTime = ta;
-        spawnSongTime = ta - advanceTime;
+        spawnSongTime = ta - travelTime;
 
         transform.position = spawnPosition;
         startY = spawnPosition.y;
-        targetY = hitLineY;
+        this.missY = missY;
+        this.laneIndex = laneIndex;
+        hasPassedHitLine = false;
+
+        float distanceToHitLine = startY - hitLineY;
+        speed = travelTime > 0f ? distanceToHitLine / travelTime : 0f;
 
         isInitialized = true;
     }
@@ -32,20 +37,27 @@ public class CandyMover : MonoBehaviour
         if (!isInitialized) return;
 
         float currentSongTimer = RhythmController.Instance != null ? RhythmController.Instance.SongTimer : Time.time;
-
-        float totalDuration = targetArrivalTime - spawnSongTime;
-        if (totalDuration <= 0f) return;
-
         float elapsed = currentSongTimer - spawnSongTime;
-        float progress = elapsed / totalDuration;
 
         Vector3 pos = transform.position;
-        pos.y = Mathf.Lerp(startY, targetY, progress);
+        pos.y = startY - speed * elapsed;
         transform.position = pos;
 
-        // Deactivate and return to pool after it passes the hit line threshold
-        if (currentSongTimer > targetArrivalTime + 0.5f)
+        if (!hasPassedHitLine && currentSongTimer >= targetArrivalTime)
         {
+            hasPassedHitLine = true;
+            if (CatMoveController.IsLaneCaught(laneIndex))
+            {
+                RhythmController.Instance?.RegisterHit(laneIndex);
+                isInitialized = false;
+                gameObject.SetActive(false);
+                return;
+            }
+        }
+
+        if (hasPassedHitLine && pos.y <= missY)
+        {
+            RhythmController.Instance?.RegisterMiss(laneIndex);
             isInitialized = false;
             gameObject.SetActive(false);
         }
