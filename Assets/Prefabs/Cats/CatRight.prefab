@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2372890896015514196}
   - component: {fileID: 2799132397110346016}
   - component: {fileID: 730906870493300065}
+  - component: {fileID: 276450869312720877}
   m_Layer: 0
   m_Name: CatRight
   m_TagString: Untagged
@@ -165,7 +166,6 @@ MonoBehaviour:
   - Idle_Start
   eatAnims:
   - Eating_Single_Object
-  - Eating_Single_Object_2
   missAnims:
   - Miss_Object_Lose_2
   victoryAnims:
@@ -176,3 +176,16 @@ MonoBehaviour:
   - Idle_Playing
   - Idle_Yawn
   idleInterval: 3
+--- !u!210 &276450869312720877
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494958919490901500}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0

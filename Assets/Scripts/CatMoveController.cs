@@ -6,6 +6,7 @@ public class CatMoveController : MonoBehaviour
     [Header("Lane Configuration")]
     [SerializeField] private int laneStartIndex = 0; // Starting index in LaneManager (e.g., 0 for left cat, 2 for right cat)
     [SerializeField] private int laneCount = 2;      // Number of lanes this cat can use (e.g., 2 lanes)
+    [SerializeField] private int initialLaneIndex = 0; // Default standing column upon initialization (calculated within this cat's laneCount range)
     [SerializeField] private float snapSpeed = 20f;   // Smooth transition speed for movement
 
     [Header("Visual Adjustment")]
@@ -50,7 +51,6 @@ public class CatMoveController : MonoBehaviour
 
     void Start()
     {
-
         mainCamera = Camera.main;
         initialZ = transform.position.z;
 
@@ -58,6 +58,17 @@ public class CatMoveController : MonoBehaviour
         {
             initialY = LaneManager.Instance.HitLineY + catVisualOffsetY;
             assignedLaneXPositions = LaneManager.Instance.GetLaneXSlice(laneStartIndex, laneCount);
+
+            if (assignedLaneXPositions != null && assignedLaneXPositions.Length > 0)
+            {
+                currentLaneIndex = Mathf.Clamp(initialLaneIndex, 0, assignedLaneXPositions.Length - 1);
+
+                Vector3 pos = transform.position;
+                pos.x = assignedLaneXPositions[currentLaneIndex];
+                pos.y = initialY;
+                pos.z = initialZ;
+                transform.position = pos;
+            }
         }
     }
 

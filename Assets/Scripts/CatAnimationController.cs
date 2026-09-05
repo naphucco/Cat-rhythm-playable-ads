@@ -18,6 +18,7 @@ public class CatAnimationController : MonoBehaviour
     [SerializeField] private float idleInterval = 4f;
     private float lastActionTime;
     private bool isIdling = false;
+    private bool isGameOver = false; // Flag to lock animations when game ends
 
     private void Awake()
     {
@@ -35,6 +36,12 @@ public class CatAnimationController : MonoBehaviour
             RhythmController.Instance.OnNoteMissEvent += HandleNoteMiss;
         }
 
+        // Listen to game state changes from GameManager to lock animations on lose
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnLoseStateEntered += HandleLoseStateEntered;
+        }
+
         if (skeletonAnimation != null && skeletonAnimation.AnimationState != null)
         {
             skeletonAnimation.AnimationState.Complete += HandleAnimationComplete;
@@ -49,6 +56,11 @@ public class CatAnimationController : MonoBehaviour
             RhythmController.Instance.OnNoteMissEvent -= HandleNoteMiss;
         }
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnLoseStateEntered -= HandleLoseStateEntered;
+        }
+
         if (skeletonAnimation != null && skeletonAnimation.AnimationState != null)
         {
             skeletonAnimation.AnimationState.Complete -= HandleAnimationComplete;
@@ -57,6 +69,9 @@ public class CatAnimationController : MonoBehaviour
 
     private void Update()
     {
+        // Stop updating idle if game is over
+        if (isGameOver) return;
+
         // Trigger a random idle animation if the cat has been inactive for too long
         if (!isIdling && Time.time - lastActionTime >= idleInterval)
         {
@@ -66,6 +81,8 @@ public class CatAnimationController : MonoBehaviour
 
     private void HandleAnimationComplete(TrackEntry trackEntry)
     {
+        if (isGameOver) return;
+
         // Automatically switch to another random idle variant when the current idle finishes playing
         if (isIdling && idleAnims != null && idleAnims.Length > 0)
         {
@@ -83,6 +100,8 @@ public class CatAnimationController : MonoBehaviour
 
     private void HandleNoteHit(int laneIndex)
     {
+        if (isGameOver) return;
+
         if (IsMyLane(laneIndex))
         {
             PlayEat();
@@ -91,10 +110,17 @@ public class CatAnimationController : MonoBehaviour
 
     private void HandleNoteMiss(int laneIndex)
     {
-        if (IsMyLane(laneIndex))
-        {
-            PlayMiss();
-        }
+        if (isGameOver) return;
+
+        // Both cats play miss animation when any note is missed
+        PlayMiss();
+    }
+
+    private void HandleLoseStateEntered()
+    {
+        isGameOver = true;
+        // Ensure both cats play miss animation and stay locked without returning to idle
+        PlayRandomAnimation(missAnims, false);
     }
 
     private bool IsMyLane(int laneIndex)
@@ -126,7 +152,7 @@ public class CatAnimationController : MonoBehaviour
 
     public void PlayIdle()
     {
-        if (skeletonAnimation == null || idleAnims == null || idleAnims.Length == 0) return;
+        if (isGameOver || skeletonAnimation == null || idleAnims == null || idleAnims.Length == 0) return;
 
         string randomIdle = idleAnims[Random.Range(0, idleAnims.Length)];
         if (!string.IsNullOrEmpty(randomIdle))

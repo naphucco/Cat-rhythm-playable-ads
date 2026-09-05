@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialGuideUI
   leftGuide: {fileID: 0}
-  leftImage: {fileID: 0}
   rightGuide: {fileID: 0}
-  rightImage: {fileID: 0}
   moveDistance: 30
   moveDuration: 0.6
-  fadeDuration: 0.4
+  fadeDuration: 1
