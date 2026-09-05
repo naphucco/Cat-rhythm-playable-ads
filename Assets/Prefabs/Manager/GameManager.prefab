@@ -50,7 +50,7 @@ MonoBehaviour:
   autoStart: 0
   songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
-  missViewportY: 0
+  missViewportY: 0.25
   cat1MaxLaneIndex: 1
 --- !u!114 &4342415825757706530
 MonoBehaviour:

@@ -15,7 +15,7 @@ public class Pooler : MonoBehaviour
     public struct PoolConfig
     {
         [Tooltip("Identifier for the candy type, matching the lane or JSON ID.")]
-        public PooType id;
+        public ObjectType id;
         
         [Tooltip("Prefab corresponding to this specific candy type.")]
         public GameObject prefab;
@@ -28,7 +28,7 @@ public class Pooler : MonoBehaviour
     [SerializeField] private List<PoolConfig> poolConfigs;
     
     // Dictionary storing queues of pooled game objects categorized by their candy ID
-    private Dictionary<PooType, Queue<GameObject>> poolDictionary;
+    private Dictionary<ObjectType, Queue<GameObject>> poolDictionary;
 
     // Flag to check if the pool is fully initialized before the NoteSpawner starts requesting items
     public bool IsInitialized { get; private set; } = false;
@@ -46,7 +46,7 @@ public class Pooler : MonoBehaviour
             return;
         }
 
-        poolDictionary = new Dictionary<PooType, Queue<GameObject>>();
+        poolDictionary = new Dictionary<ObjectType, Queue<GameObject>>();
         
         // Execute the staggered initialization coroutine instead of instantiating everything at once
         StartCoroutine(InitializePoolsStaggered());
@@ -82,7 +82,7 @@ public class Pooler : MonoBehaviour
     /// <summary>
     /// Retrieves a candy instance from the pool based on the specified candy ID.
     /// </summary>
-    public GameObject GetCandy(PooType id, Vector3 position, Quaternion rotation)
+    public GameObject GetCandy(ObjectType id, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(id))
         {
@@ -119,7 +119,7 @@ public class Pooler : MonoBehaviour
     /// <summary>
     /// Returns a candy back to the pool after it goes off-screen or gets collected.
     /// </summary>
-    public void ReturnCandy(PooType id, GameObject candy)
+    public void ReturnCandy(ObjectType id, GameObject candy)
     {
         candy.SetActive(false);
         candy.transform.SetParent(transform);

@@ -18,6 +18,16 @@ public class SongSettings : ScriptableObject
     [Tooltip("Configure how sparse MIDI PIDs map to sequential lane indices for this song.")]
     public PidMapping[] pidMappings;
 
+    [Header("Score Configuration")]
+    [Tooltip("Points awarded for catching a normal candy.")]
+    [SerializeField] private int normalScore = 2;
+
+    [Tooltip("Points awarded for catching a strong candy.")]
+    [SerializeField] private int strongScore = 5;
+
+    [Tooltip("Points awarded for catching a long candy.")]
+    [SerializeField] private int longScore = 3;
+
     /// <summary>
     /// Helper method to convert a JSON PID to a sequential lane index based on asset configuration
     /// </summary>
@@ -36,5 +46,27 @@ public class SongSettings : ScriptableObject
 
         Debug.LogWarning($"[SongSettings] Unmapped JSON PID '{jsonPid}' found. Defaulting to lane index 0.");
         return 0;
+    }
+
+    /// <summary>
+    /// Returns the score value based on the given PooType.
+    /// </summary>
+    public int GetScore(ObjectType candyType)
+    {
+        switch (candyType)
+        {
+            case ObjectType.Candy1_Strong:
+            case ObjectType.Candy2_Strong:
+                return strongScore;
+
+            case ObjectType.Candy1_Long:
+            case ObjectType.Candy2_Long:
+                return longScore;
+
+            case ObjectType.Candy1_Normal:
+            case ObjectType.Candy2_Normal:
+            default:
+                return normalScore;
+        }
     }
 }

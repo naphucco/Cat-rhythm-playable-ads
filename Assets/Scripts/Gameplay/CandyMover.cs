@@ -6,17 +6,17 @@ using UnityEngine;
 /// </summary>
 public class CandyMover : MonoBehaviour
 {
-    private PooType candyId;
+    private ObjectType candyId;
     private float targetArrivalTime;
     private float spawnSongTime;
     private float startY;
     private float missY;
     private float speed; 
     private int laneIndex;
-    private bool isInitialized = false;
+    private bool isActive = false;
     private bool hasPassedHitLine = false;
 
-    public void Initialize(PooType id, float ta, Vector3 spawnPosition, float hitLineY, float missY, float travelTime, int laneIndex)
+    public void Initialize(ObjectType id, float ta, Vector3 spawnPosition, float hitLineY, float missY, float travelTime, int laneIndex)
     {
         candyId = id;
         targetArrivalTime = ta;
@@ -31,12 +31,12 @@ public class CandyMover : MonoBehaviour
         float distanceToHitLine = startY - hitLineY;
         speed = travelTime > 0f ? distanceToHitLine / travelTime : 0f;
 
-        isInitialized = true;
+        isActive = true;
     }
 
     private void Update()
     {
-        if (!isInitialized) return;
+        if (!isActive) return;
 
         float currentSongTimer = RhythmController.Instance != null ? RhythmController.Instance.SongTimer : Time.time;
         float elapsed = currentSongTimer - spawnSongTime;
@@ -45,13 +45,14 @@ public class CandyMover : MonoBehaviour
         pos.y = startY - speed * elapsed;
         transform.position = pos;
 
+        // Check hit condition precisely when the candy reaches the target arrival time at the hit line
         if (!hasPassedHitLine && currentSongTimer >= targetArrivalTime)
         {
             hasPassedHitLine = true;
             if (CatMoveController.IsLaneCaught(laneIndex))
             {
-                RhythmController.Instance?.RegisterHit(laneIndex);
-                isInitialized = false;
+                RhythmController.Instance?.RegisterHit(laneIndex, candyId);
+                isActive = false;
                 
                 if (Pooler.Instance != null)
                 {
@@ -65,10 +66,11 @@ public class CandyMover : MonoBehaviour
             }
         }
 
+        // Check miss condition when the candy reaches missY after passing the hit line
         if (hasPassedHitLine && pos.y <= missY)
         {
             RhythmController.Instance?.RegisterMiss(laneIndex);
-            isInitialized = false;
+            isActive = false;
             
             if (Pooler.Instance != null)
             {

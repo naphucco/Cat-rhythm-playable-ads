@@ -1,4 +1,4 @@
-public enum PooType
+public enum ObjectType
 {
     Candy1_Long = 0,
     Candy1_Normal = 1,

@@ -39,8 +39,8 @@ public class RhythmController : MonoBehaviour
     public event Action OnGameWin;
     public event Action OnGameLose;
 
-    // Expose public events for hit and miss notifications
-    public event Action<int> OnNoteHitEvent;
+    // Expose public events for hit and miss notifications (OnNoteHitEvent now includes laneIndex and candyType)
+    public event Action<int, ObjectType> OnNoteHitEvent;
     public event Action<int> OnNoteMissEvent;
 
     /// <summary>
@@ -147,7 +147,7 @@ public class RhythmController : MonoBehaviour
         int laneIndex = note.LaneIndex;
 
         // Determine the visual prefab type based on lane index, velocity, and duration
-        PooType candyID = ResolveCandyID(laneIndex, note.v, note.d);
+        ObjectType candyID = ResolveCandyID(laneIndex, note.v, note.d);
 
         // Fetch spawn position at the top of the screen aligned with the correct lane X
         Vector3 spawnPosition = LaneManager.Instance.GetSpawnPosition(laneIndex);
@@ -164,7 +164,7 @@ public class RhythmController : MonoBehaviour
             var mover = candy.GetComponent<CandyMover>();
             if (mover != null)
             {
-                float hitLineY = LaneManager.Instance != null ? LaneManager.Instance.HitLineY : -3.5f;
+                float hitLineY = LaneManager.Instance.HitLineY;
 
                 mover.Initialize(
                     candyID,
@@ -182,7 +182,7 @@ public class RhythmController : MonoBehaviour
     /// <summary>
     /// Resolves which candy variant to instantiate based on lane assignment and note properties.
     /// </summary>
-    private PooType ResolveCandyID(int laneIndex, int velocity, float duration)
+    private ObjectType ResolveCandyID(int laneIndex, int velocity, float duration)
     {
         bool isLong = duration > songSettings.longNoteThreshold;
         bool isStrong = velocity > songSettings.strongVelocityThreshold;
@@ -190,23 +190,22 @@ public class RhythmController : MonoBehaviour
         // Determine if the note belongs to Cat 1 (left) or Cat 2 (right) using clean lane index
         if (laneIndex <= cat1MaxLaneIndex)
         {
-            if (isLong) return PooType.Candy1_Long;
-            return isStrong ? PooType.Candy1_Strong : PooType.Candy1_Normal;
+            if (isLong) return ObjectType.Candy1_Long;
+            return isStrong ? ObjectType.Candy1_Strong : ObjectType.Candy1_Normal;
         }
         else
         {
-            if (isLong) return PooType.Candy2_Long;
-            return isStrong ? PooType.Candy2_Strong : PooType.Candy2_Normal;
+            if (isLong) return ObjectType.Candy2_Long;
+            return isStrong ? ObjectType.Candy2_Strong : ObjectType.Candy2_Normal;
         }
     }
 
     /// <summary>
     /// Callback executed when a candy is successfully caught by a cat at the hit line.
     /// </summary>
-    public void RegisterHit(int laneIndex)
+    public void RegisterHit(int laneIndex, ObjectType candyType)
     {
-        // Debug.Log($"[GamePlay] HIT at lane: {laneIndex}");
-        OnNoteHitEvent?.Invoke(laneIndex);
+        OnNoteHitEvent?.Invoke(laneIndex, candyType);
     }
 
     /// <summary>
@@ -214,7 +213,6 @@ public class RhythmController : MonoBehaviour
     /// </summary>
     public void RegisterMiss(int laneIndex)
     {
-        // Debug.Log($"[GamePlay] MISS at lane: {laneIndex}");
         OnNoteMissEvent?.Invoke(laneIndex);
     }
 

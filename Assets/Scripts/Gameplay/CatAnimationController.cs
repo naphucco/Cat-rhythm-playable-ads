@@ -98,7 +98,7 @@ public class CatAnimationController : MonoBehaviour
         }
     }
 
-    private void HandleNoteHit(int laneIndex)
+    private void HandleNoteHit(int laneIndex, ObjectType objectType)
     {
         if (isGameOver) return;
 
