@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2931381589358150826}
-  - component: {fileID: 5775322368987707933}
   - component: {fileID: 2374829854622134987}
   - component: {fileID: 4342415825757706530}
+  - component: {fileID: 2595283743022905730}
+  - component: {fileID: 5059338443223842820}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -34,40 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5775322368987707933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1319443513305965773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7d1cca766de52b4c965dd4d426c1f97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MultiCandyPooler
-  poolConfigs:
-  - id: 3
-    prefab: {fileID: 3702687485260971357, guid: f2a11d8e1e71d2a488e44332f08ac026, type: 3}
-    poolSize: 5
-  - id: 1
-    prefab: {fileID: 3702687485260971357, guid: 068844c74342ccf48bc46f260d7755c8, type: 3}
-    poolSize: 5
-  - id: 2
-    prefab: {fileID: 3702687485260971357, guid: 192cc8b33e2252845b1864e0eba61c40, type: 3}
-    poolSize: 5
-  - id: 0
-    prefab: {fileID: 3702687485260971357, guid: 90d8fd2af01131b419af0a6c68459de6, type: 3}
-    poolSize: 5
-  - id: 4
-    prefab: {fileID: 3702687485260971357, guid: dfe5d2004f6e0a74696761a5f77d9fa2, type: 3}
-    poolSize: 5
-  - id: 5
-    prefab: {fileID: 3702687485260971357, guid: b20f8d2d36e590e41b3af89c65df5937, type: 3}
-    poolSize: 5
-  - id: 6
-    prefab: {fileID: 3702687485260971357, guid: 505a81f543387514cb8fd4b513bf9012, type: 3}
-    poolSize: 2
 --- !u!114 &2374829854622134987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266acfe1fdaa428418ddecf2d9c36fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoteSpawner
-  autoStart: 1
+  autoStart: 0
   songSettings: {fileID: 11400000, guid: f7e8fa5e94f02ef40ae5e5081c4ee51c, type: 2}
   jsonChartFile: {fileID: 4900000, guid: 494e046c3d0f89c4ea153d043c3a3d59, type: 3}
   missViewportY: 0
@@ -103,4 +70,30 @@ MonoBehaviour:
   - 0.6
   - 0.8
   spawnViewportY: 1
-  hitLineViewportY: 0.3
+  hitLineViewportY: 0.33
+--- !u!114 &2595283743022905730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319443513305965773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a814e78ba35fc964a96e0f6752be7afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  currentState: 0
+--- !u!114 &5059338443223842820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319443513305965773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f6cb65dc1ce27488e2cfaf61ad62f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialController
+  tutorialPanel: {fileID: 0}
