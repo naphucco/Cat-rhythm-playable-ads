@@ -1,47 +1,37 @@
 using UnityEngine;
+using System;
 
-/// <summary>
-/// Manages background music playback and listens to NoteSpawner events to handle audio triggers.
-/// </summary>
 public class AudioManager : Singleton<AudioManager>
 {
-    [Header("Audio Source Configuration")]
-    [Tooltip("AudioSource component responsible for playing the background music track.")]
+    [Header("Background Music")]
     [SerializeField] private AudioSource songAudioSource;
+
+    [Header("SFX")]
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioClip crySound;
 
     public bool IsPlaying => songAudioSource != null && songAudioSource.isPlaying;
     public float CurrentAudioTime => songAudioSource != null ? songAudioSource.time : 0f;
 
+    private IDisposable _subscription;
+
     private void OnEnable()
     {
-        // Subscribe to NoteSpawner events safely
-        if (RhythmController.Instance != null)
-        {
-            RhythmController.Instance.OnSongPlayRequested += PlaySong;
-            RhythmController.Instance.OnSongStopRequested += StopSong;
-        }
-    }
-
-    private void Start()
-    {
-        // Fallback subscription if NoteSpawner was initialized slightly after OnEnable
-        if (RhythmController.Instance != null)
-        {
-            RhythmController.Instance.OnSongPlayRequested -= PlaySong; // Prevent duplicate
-            RhythmController.Instance.OnSongPlayRequested += PlaySong;
-            RhythmController.Instance.OnSongStopRequested -= StopSong;
-            RhythmController.Instance.OnSongStopRequested += StopSong;
-        }
+        // Safe subscription: waits for RhythmController to be ready,
+        // auto-disposes when this GameObject is destroyed.
+        _subscription = this.WhenReady(() => RhythmController.Instance)
+            .Subscribe(this, controller =>
+            {
+                controller.OnSongPlayRequested += PlaySong;
+                controller.OnSongStopRequested += StopSong;
+                controller.OnGameLose += PlayCrySound;
+            })
+            .AddTo(this);
     }
 
     private void OnDisable()
     {
-        // Unsubscribe to prevent memory leaks
-        if (RhythmController.Instance != null)
-        {
-            RhythmController.Instance.OnSongPlayRequested -= PlaySong;
-            RhythmController.Instance.OnSongStopRequested -= StopSong;
-        }
+        _subscription?.Dispose();
     }
 
     public void PlaySong()
@@ -57,6 +47,14 @@ public class AudioManager : Singleton<AudioManager>
         if (songAudioSource != null && songAudioSource.isPlaying)
         {
             songAudioSource.Stop();
+        }
+    }
+
+    public void PlayCrySound()
+    {
+        if (sfxAudioSource != null && crySound != null)
+        {
+            sfxAudioSource.PlayOneShot(crySound);
         }
     }
 }
