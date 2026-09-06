@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5419255973891250615}
   - component: {fileID: 8848821121651980219}
   - component: {fileID: 3777963717233940505}
+  - component: {fileID: 2757142858550136396}
   m_Layer: 0
   m_Name: CatLeft
   m_TagString: Untagged
@@ -60,7 +61,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 0
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
@@ -148,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CatMoveController
   laneStartIndex: 0
   laneCount: 2
+  initialLaneIndex: 0
   snapSpeed: 20
   catVisualOffsetY: -1
 --- !u!114 &8848821121651980219
@@ -189,3 +191,30 @@ SortingGroup:
   m_SortingOrder: 1
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &2757142858550136396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155047875815836645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65f57de4b6be9940b7cc9cf62b5f710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComboFeedbackController
+  sweetThreshold: 3
+  yummyThreshold: 6
+  tastyThreshold: 10
+  sweetMessages:
+  - Sweet!
+  - Nice!
+  yummyMessages:
+  - Yummy!
+  - Delicious!
+  tastyMessages:
+  - Tasty!
+  - Perfect!
+  feedbackText: {fileID: 0}
+  displayDuration: 1
+  floatUpDistance: 80

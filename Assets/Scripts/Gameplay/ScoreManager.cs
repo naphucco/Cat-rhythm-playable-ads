@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using DG.Tweening;
+using System;
 
 /// <summary>
 /// Manages score tracking and UI updates by subscribing to RhythmController hit events.
@@ -25,8 +26,9 @@ public class ScoreManager : MonoBehaviour
     private int currentScore = 0;
     public int CurrentScore => currentScore;
 
-    // Lưu lại kích thước gốc của UI text để tween xong trả về đúng cỡ cũ
     private Vector3 originalScale = Vector3.one;
+
+    private IDisposable _subscription;
 
     private void Awake()
     {
@@ -41,25 +43,16 @@ public class ScoreManager : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(SubscribeToRhythmRoutine());
+        _subscription = this.WhenReady(() => RhythmController.Instance)
+            .Subscribe(this, controller => controller.OnNoteHitEvent += HandleNoteHit)
+            .AddTo(this);
     }
 
     private void OnDisable()
     {
-        if (RhythmController.Instance != null)
-        {
-            RhythmController.Instance.OnNoteHitEvent -= HandleNoteHit;
-        }
-    }
-
-    private IEnumerator SubscribeToRhythmRoutine()
-    {
-        while (RhythmController.Instance == null)
-        {
-            yield return null;
-        }
-
-        RhythmController.Instance.OnNoteHitEvent += HandleNoteHit;
+        // No need to unsubscribe manually since AddTo has already handled it
+        // But if you want to be safe, you still can:
+        _subscription?.Dispose();
     }
 
     private void HandleNoteHit(int laneIndex, ObjectType candyType)

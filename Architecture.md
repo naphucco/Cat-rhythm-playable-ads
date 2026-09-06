@@ -57,12 +57,14 @@ Presentation layer (UI, CatAnimationController, TutorialController, ScoreManager
    listens to whichever layer's event best matches what it actually needs
 ```
 
-* **Dependencies only flow downward** (RhythmController → GameManager → Presentation). `RhythmController` never references `GameManager`, keeping the core gameplay loop fully independent and reusable.
-* **Each listener binds to the event that matches its own semantic layer, not just "whatever fires at a convenient time".** For example:
-  * `AudioManager` listens to `RhythmController.OnSongPlayRequested` / `OnSongStopRequested` — it only cares about audio lifecycle, not about win/lose outcome, so it is never coupled to `GameManager` at all.
-  * `CandyMover` listens to `RhythmController.OnSongStopRequested` (not `GameManager.OnLoseStateEntered`) to clear itself instantly when the game ends. `OnSongStopRequested` fires on **both** Win and Lose, so candies are cleaned up in either outcome with a single subscription — and since `CandyMover` is itself spawned/owned by `RhythmController`, listening to a layer above it (`GameManager`) would create a conceptual reverse-dependency.
-  * `CatAnimationController` listens to `GameManager.OnLoseStateEntered` (not `RhythmController.OnNoteMissEvent`) for its "miss/game over" animation, since with the current single-life design a miss always immediately ends the game — binding to the higher-level state event avoids firing the same animation twice from two events that happen in the same frame.
-* **Why this matters for a playable ad**: this separation means `AudioManager`, `CandyMover`, and other core systems could be dropped into a different game/scene with a different `GameManager` state machine and would keep working unmodified — none of them know `GameManager` exists.
+* **Dependencies only flow downward** (RhythmController → GameManager → Presentation). `RhythmController` remains fully independent and reusable without referencing `GameManager`.
+* **Semantic event binding**:
+* `AudioManager` listens to `RhythmController` audio lifecycle events (`OnSongPlayRequested` / `OnSongStopRequested`) and has zero coupling to `GameManager`.
+* `CandyMover` listens to `RhythmController.OnSongStopRequested` to clear active candies on both win and lose outcomes, avoiding reverse-dependencies.
+* `CatAnimationController` listens to `GameManager.OnLoseStateEntered` for game-over animations, preventing double-firing bugs in single-life designs.
+
+
+* **Modular architecture**: Core systems (`AudioManager`, `CandyMover`) operate independently and remain compatible with alternative state machines.
 
 ---
 

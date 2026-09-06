@@ -148,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CatMoveController
   laneStartIndex: 2
   laneCount: 2
+  initialLaneIndex: 3
   snapSpeed: 20
   catVisualOffsetY: -1
 --- !u!114 &730906870493300065
