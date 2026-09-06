@@ -10,7 +10,7 @@ public class LoseScreenController : MonoBehaviour
     [SerializeField] private ButtonFadeEffect buttonEffect;
 
     [Header("Sequence Delays")]
-    [SerializeField] private float delayHole = 0.3f;
+    [SerializeField] private float delayBeforeClose = 0.3f;
 
     private IDisposable _subscription;
 
@@ -33,9 +33,10 @@ public class LoseScreenController : MonoBehaviour
     {
         Sequence seq = DOTween.Sequence();
 
-        seq.AppendInterval(delayHole);
-        seq.Append(holeEffect.Play());
-        // seq.Append(handEffect.Play());
+        seq.AppendInterval(delayBeforeClose);
+        seq.Append(holeEffect.PlayClose());
+        seq.Append(handEffect.Play());
+        seq.Append(holeEffect.PlayOpen());
         // seq.Append(buttonEffect.Play());
 
         seq.Play();

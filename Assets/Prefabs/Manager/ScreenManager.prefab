@@ -50,7 +50,7 @@ MonoBehaviour:
   holeEffect: {fileID: 2057152911276718898}
   handEffect: {fileID: 8325502921007191811}
   buttonEffect: {fileID: 2927926163569389016}
-  delayHole: 1
+  delayBeforeClose: 1.2
 --- !u!114 &2057152911276718898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,7 +66,8 @@ MonoBehaviour:
   holeImage: {fileID: 0}
   startSize: {x: 2, y: 2, z: 0, w: 0}
   endSize: {x: 0.01, y: 0.01, z: 0, w: 0}
-  duration: 1.2
+  closeDuration: 0.8
+  openDuration: 0.6
 --- !u!114 &8325502921007191811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,7 +81,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandAppearEffect
   handRect: {fileID: 0}
-  duration: 0.6
+  appearDuration: 0.6
+  holdDuration: 0.5
+  shrinkDuration: 0.3
+  startScale: {x: 0, y: 0, z: 0}
+  peakScale: {x: 1.2, y: 1.2, z: 1.2}
+  endScale: {x: 0, y: 0, z: 0}
 --- !u!114 &2927926163569389016
 MonoBehaviour:
   m_ObjectHideFlags: 0
