@@ -4,10 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Manages the overall game states (Tutorial, Playing, Win, PickNextSong, Lose) and coordinates with RhythmController and AudioManager.
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance;
-
     public enum GameState
     {
         Tutorial,
@@ -29,19 +27,6 @@ public class GameManager : MonoBehaviour
     public event Action OnPickNextSongStateEntered;
     public event Action OnLoseStateEntered;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-
     private void Start()
     {
         // Subscribe to RhythmController events for Miss, Win, and Lose conditions
@@ -56,8 +41,10 @@ public class GameManager : MonoBehaviour
         SetState(GameState.Tutorial);
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
+
         if (RhythmController.Instance != null)
         {
             RhythmController.Instance.OnNoteMissEvent -= HandleNoteMiss;

@@ -7,10 +7,8 @@ using System;
 /// <summary>
 /// Manages score tracking and UI updates by subscribing to RhythmController hit events.
 /// </summary>
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : Singleton<ScoreManager>
 {
-    public static ScoreManager Instance;
-
     [Header("References")]
     [Tooltip("Reference to SongSettings to lookup score values.")]
     [SerializeField] private SongSettings songSettings;
@@ -30,10 +28,9 @@ public class ScoreManager : MonoBehaviour
 
     private IDisposable _subscription;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null) Instance = this;
-        else { Destroy(gameObject); return; }
+        base.Awake();
 
         if (scoreText != null)
         {

@@ -7,10 +7,8 @@ using UnityEngine;
 /// Uses a Coroutine to stagger the instantiation process across multiple frames,
 /// completely eliminating startup CPU performance spikes.
 /// </summary>
-public class Pooler : MonoBehaviour
+public class Pooler : Singleton<Pooler>
 {
-    public static Pooler Instance;
-
     [System.Serializable]
     public struct PoolConfig
     {
@@ -33,21 +31,11 @@ public class Pooler : MonoBehaviour
     // Flag to check if the pool is fully initialized before the NoteSpawner starts requesting items
     public bool IsInitialized { get; private set; } = false;
 
-    private void Awake()
+    protected override void Awake()
     {
-        // Basic Singleton pattern implementation
-        if (Instance == null) 
-        {
-            Instance = this;
-        }
-        else 
-        {
-            Destroy(gameObject);
-            return;
-        }
+        base.Awake();
 
-        poolDictionary = new Dictionary<ObjectType, Queue<GameObject>>();
-        
+        poolDictionary = new Dictionary<ObjectType, Queue<GameObject>>();        
         // Execute the staggered initialization coroutine instead of instantiating everything at once
         StartCoroutine(InitializePoolsStaggered());
     }

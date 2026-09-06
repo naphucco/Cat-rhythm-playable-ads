@@ -6,10 +6,8 @@ using UnityEngine;
 /// <summary>
 /// Manages the rhythm game's core execution loop, note spawning, and integrates with LaneManager for lane positioning.
 /// </summary>
-public class RhythmController : MonoBehaviour
+public class RhythmController : Singleton<RhythmController>
 {
-    public static RhythmController Instance;
-
     [Header("Game Configuration")]
     [SerializeField] private bool autoStart;
 
@@ -47,22 +45,6 @@ public class RhythmController : MonoBehaviour
     /// Exposes the synchronized song timer publicly for external components.
     /// </summary>
     public float SongTimer => songTimer;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
-    }
 
     private void Start()
     {

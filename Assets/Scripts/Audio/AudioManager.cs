@@ -3,29 +3,14 @@ using UnityEngine;
 /// <summary>
 /// Manages background music playback and listens to NoteSpawner events to handle audio triggers.
 /// </summary>
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    public static AudioManager Instance;
-
     [Header("Audio Source Configuration")]
     [Tooltip("AudioSource component responsible for playing the background music track.")]
     [SerializeField] private AudioSource songAudioSource;
 
     public bool IsPlaying => songAudioSource != null && songAudioSource.isPlaying;
     public float CurrentAudioTime => songAudioSource != null ? songAudioSource.time : 0f;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
 
     private void OnEnable()
     {

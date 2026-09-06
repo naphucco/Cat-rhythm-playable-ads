@@ -11,7 +11,7 @@ public class FPSCounter : MonoBehaviour
     [SerializeField] private bool showFPS = true;
     [SerializeField] private float updateInterval = 0.5f; // How often to update display
     [SerializeField] private TextMeshProUGUI fpsText;
-    
+
     [Header("Color Thresholds")]
     [SerializeField] private Color goodColor = Color.green;
     [SerializeField] private Color warningColor = Color.yellow;
@@ -20,9 +20,7 @@ public class FPSCounter : MonoBehaviour
     [SerializeField] private int badThreshold = 20;
 
     private int _frameCount = 0;
-    private float _timeAccumulator = 0f;
     private float _currentFPS = 0f;
-    private int _lastFrameCount = 0;
     private float _lastTime = 0f;
 
     private void Start()
@@ -32,14 +30,14 @@ public class FPSCounter : MonoBehaviour
         {
             GameObject textGO = new GameObject("FPS_Text");
             textGO.transform.SetParent(transform);
-            
+
             fpsText = textGO.AddComponent<TextMeshProUGUI>();
-            
+
             // Set default appearance
             fpsText.fontSize = 32;
             fpsText.color = Color.white;
             fpsText.alignment = TextAlignmentOptions.TopLeft;
-            
+
             // Set position (top-left corner)
             RectTransform rect = fpsText.rectTransform;
             rect.anchorMin = new Vector2(0, 1);
@@ -55,7 +53,9 @@ public class FPSCounter : MonoBehaviour
         }
 
         _lastTime = Time.realtimeSinceStartup;
-        _lastFrameCount = 0;
+        
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
     }
 
     private void Update()
@@ -70,7 +70,7 @@ public class FPSCounter : MonoBehaviour
         {
             // Calculate FPS over the interval
             _currentFPS = _frameCount / delta;
-            
+
             // Reset counters
             _frameCount = 0;
             _lastTime = currentTime;
@@ -84,30 +84,29 @@ public class FPSCounter : MonoBehaviour
     {
         if (fpsText == null) return;
 
-        // Choose color based on FPS
-        Color color;
         string fpsString;
-        
+        string status = "";
+
         if (_currentFPS >= warningThreshold)
         {
-            color = goodColor;
-            fpsString = $"<color=#{ColorToHex(color)}>{_currentFPS:F1} FPS</color>";
+            status = "";
         }
         else if (_currentFPS >= badThreshold)
         {
-            color = warningColor;
-            fpsString = $"<color=#{ColorToHex(color)}>{_currentFPS:F1} FPS ⚠</color>";
+            status = " [!]";
         }
         else
         {
-            color = badColor;
-            fpsString = $"<color=#{ColorToHex(color)}>{_currentFPS:F1} FPS 🔴</color>";
+            status = " [!]";
         }
 
-        // Add additional info
-        fpsString += $"\n<size=20>Frame: {Time.frameCount}</size>";
-        fpsString += $"\n<size=18>Mem: {System.GC.GetTotalMemory(false) / 1024 / 1024} MB</size>";
+        fpsString = $"{_currentFPS:F1} FPS{status}";
 
+        // Chọn màu
+        Color color = _currentFPS >= warningThreshold ? goodColor :
+                      _currentFPS >= badThreshold ? warningColor : badColor;
+
+        fpsText.color = color;
         fpsText.text = fpsString;
     }
 

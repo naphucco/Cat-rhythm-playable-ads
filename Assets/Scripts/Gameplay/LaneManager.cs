@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LaneManager : MonoBehaviour
+public class LaneManager : Singleton<LaneManager>
 {
     [Header("Lane Viewport Setup (X ranges from 0.0 to 1.0 across the screen)")]
     [Tooltip("Normalized horizontal positions (0 to 1) for each lane across the screen width.")]
@@ -15,16 +15,10 @@ public class LaneManager : MonoBehaviour
     public float HitLineY { get; private set; }
 
     private Camera mainCamera;
-    public static LaneManager Instance { get; private set; }
 
-    void Awake()
+    protected override void Awake()
     {
-        if (Instance == null) Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        base.Awake();
 
         Camera mainCam = Camera.main;
         HitLineY = mainCam.ViewportToWorldPoint(new Vector3(0f, hitLineViewportY, -mainCam.transform.position.z)).y;
