@@ -2,6 +2,9 @@ using UnityEngine;
 using Spine.Unity;
 using Spine;
 
+/// <summary>
+/// Manages cat animations via Spine based on game events and states.
+/// </summary>
 public class CatAnimationController : MonoBehaviour
 {
     private SkeletonAnimation skeletonAnimation;
@@ -33,7 +36,6 @@ public class CatAnimationController : MonoBehaviour
         if (RhythmController.Instance != null)
         {
             RhythmController.Instance.OnNoteHitEvent += HandleNoteHit;
-            RhythmController.Instance.OnNoteMissEvent += HandleNoteMiss;
         }
 
         // Listen to game state changes from GameManager to lock animations on lose
@@ -53,7 +55,6 @@ public class CatAnimationController : MonoBehaviour
         if (RhythmController.Instance != null)
         {
             RhythmController.Instance.OnNoteHitEvent -= HandleNoteHit;
-            RhythmController.Instance.OnNoteMissEvent -= HandleNoteMiss;
         }
 
         if (GameManager.Instance != null)
@@ -108,19 +109,11 @@ public class CatAnimationController : MonoBehaviour
         }
     }
 
-    private void HandleNoteMiss(int laneIndex)
-    {
-        if (isGameOver) return;
-
-        // Both cats play miss animation when any note is missed
-        PlayMiss();
-    }
-
     private void HandleLoseStateEntered()
     {
         isGameOver = true;
         // Ensure both cats play miss animation and stay locked without returning to idle
-        PlayRandomAnimation(missAnims, false);
+        PlayMiss();
     }
 
     private bool IsMyLane(int laneIndex)
