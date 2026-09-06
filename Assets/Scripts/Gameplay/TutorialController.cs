@@ -11,9 +11,12 @@ public class TutorialController : MonoBehaviour
     [Header("References")]
     [Tooltip("Left guide parent RectTransform containing image components.")]
     [SerializeField] private RectTransform leftGuide;
-    
+
     [Tooltip("Right guide parent RectTransform containing image components.")]
     [SerializeField] private RectTransform rightGuide;
+
+    [Tooltip("Dialog image component (static, does not move, but fades out).")]
+    [SerializeField] private Image dialogImage;
 
     private Image[] leftImages;
     private Image[] rightImages;
@@ -76,13 +79,17 @@ public class TutorialController : MonoBehaviour
     {
         if (leftGuide == null || rightGuide == null) return;
 
+        // Set the infinite loop on the Sequence level instead of individual tweens
         pulseSequence = DOTween.Sequence();
 
         Vector2 leftOriginalPos = leftGuide.anchoredPosition;
         Vector2 rightOriginalPos = rightGuide.anchoredPosition;
 
-        pulseSequence.Join(leftGuide.DOAnchorPosX(leftOriginalPos.x - moveDistance, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine));
-        pulseSequence.Join(rightGuide.DOAnchorPosX(rightOriginalPos.x + moveDistance, moveDuration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine));
+        pulseSequence.Join(leftGuide.DOAnchorPosX(leftOriginalPos.x - moveDistance, moveDuration).SetEase(Ease.InOutSine));
+        pulseSequence.Join(rightGuide.DOAnchorPosX(rightOriginalPos.x + moveDistance, moveDuration).SetEase(Ease.InOutSine));
+
+        // Apply infinite loop to the entire Sequence
+        pulseSequence.SetLoops(-1, LoopType.Yoyo);
     }
 
     private void HandlePlayingStateEntered()
@@ -110,11 +117,18 @@ public class TutorialController : MonoBehaviour
             }
         }
 
+        // Fade out the dialog image
+        if (dialogImage != null)
+        {
+            dialogImage.DOFade(0f, duration);
+        }
+
         DOVirtual.DelayedCall(duration, () =>
         {
             if (leftGuide != null) leftGuide.gameObject.SetActive(false);
             if (rightGuide != null) rightGuide.gameObject.SetActive(false);
-            
+            if (dialogImage != null) dialogImage.gameObject.SetActive(false);
+
             enabled = false;
         });
     }
