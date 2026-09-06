@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System;
+using DG.Tweening;
 
 public class ComboFeedbackController : MonoBehaviour
 {
@@ -17,21 +18,27 @@ public class ComboFeedbackController : MonoBehaviour
     [SerializeField] private string[] midComboMessages = { "Yummy!", "Delicious!" };
     [SerializeField] private string[] highComboMessages = { "Tasty!", "Perfect!" };
 
-    [Header("Animation")]
+    [Header("Animation Settings")]
     [SerializeField] private float displayDuration = 1.0f;
     [SerializeField] private float floatUpDistance = 80f;
+    [SerializeField] private float initialScale = 0.5f;
+    [SerializeField] private float peakScale = 1.2f;
+    [SerializeField] private float scaleDuration = 0.2f;
+    [SerializeField] private float fadeOutDuration = 0.4f;
+    [SerializeField] private float verticalOffset = 1.2f;
 
     private int currentCombo = 0;
     private Coroutine feedbackCoroutine;
     private Camera mainCamera;
     private CatMoveController catMove;
     private IDisposable _subscription;
+    private Sequence currentSequence;
 
     private void Start()
     {
         mainCamera = Camera.main;
         catMove = GetComponent<CatMoveController>();
-        if (feedbackText != null) feedbackText.gameObject.SetActive(false);        
+        if (feedbackText != null) feedbackText.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -48,6 +55,12 @@ public class ComboFeedbackController : MonoBehaviour
     private void OnDisable()
     {
         _subscription?.Dispose();
+
+        if (currentSequence != null)
+        {
+            currentSequence.Kill();
+            currentSequence = null;
+        }
     }
 
     private void OnNoteHit(int laneIndex, ObjectType candyType)
@@ -84,43 +97,58 @@ public class ComboFeedbackController : MonoBehaviour
 
     private IEnumerator ShowFeedbackAnimation(string message)
     {
+        // Kill existing sequence if any
+        if (currentSequence != null)
+        {
+            currentSequence.Kill();
+            currentSequence = null;
+        }
+
+        // Kill all tweens on this text
+        feedbackText.DOKill();
+        feedbackText.transform.DOKill();
+        feedbackText.rectTransform.DOKill();
+
+        // Calculate position above cat's head
         Vector3 catWorldPos = transform.position;
-        catWorldPos.y += 1.2f;
+        catWorldPos.y += verticalOffset;
 
         if (mainCamera == null) mainCamera = Camera.main;
         Vector3 screenPos = mainCamera != null ? mainCamera.WorldToScreenPoint(catWorldPos) : catWorldPos;
 
+        // Reset EVERYTHING before starting new animation
         feedbackText.rectTransform.position = screenPos;
         feedbackText.text = message;
         feedbackText.gameObject.SetActive(true);
+        feedbackText.transform.localScale = Vector3.one * initialScale;
 
-        feedbackText.transform.localScale = Vector3.one * 0.5f;
         Color color = feedbackText.color;
         color.a = 1f;
         feedbackText.color = color;
 
-        float elapsed = 0f;
-        Vector3 startPos = screenPos;
-        Vector3 endPos = startPos + new Vector3(0, floatUpDistance, 0);
+        // Create new sequence
+        currentSequence = DOTween.Sequence();
 
-        while (elapsed < displayDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / displayDuration;
+        // Phase 1: Scale up
+        currentSequence.Append(feedbackText.transform.DOScale(peakScale, scaleDuration));
+        currentSequence.Join(feedbackText.DOFade(1f, scaleDuration));
 
-            feedbackText.rectTransform.position = Vector3.Lerp(startPos, endPos, t);
+        // Phase 2: Scale back to normal
+        currentSequence.Append(feedbackText.transform.DOScale(1f, scaleDuration));
 
-            float scale = t < 0.2f ? Mathf.Lerp(0.5f, 1.2f, t / 0.2f) : Mathf.Lerp(1.2f, 1f, (t - 0.2f) / 0.8f);
-            feedbackText.transform.localScale = Vector3.one * scale;
+        // Phase 3: Wait
+        float waitTime = displayDuration - (scaleDuration * 2) - fadeOutDuration;
+        if (waitTime > 0) currentSequence.AppendInterval(waitTime);
 
-            float alpha = t < 0.6f ? 1f : Mathf.Lerp(1f, 0f, (t - 0.6f) / 0.4f);
-            color.a = alpha;
-            feedbackText.color = color;
+        // Phase 4: Float up and fade out
+        Vector3 endPos = screenPos + new Vector3(0, floatUpDistance, 0);
+        currentSequence.Append(feedbackText.rectTransform.DOMove(endPos, fadeOutDuration));
+        currentSequence.Join(feedbackText.DOFade(0f, fadeOutDuration));
 
-            yield return null;
-        }
+        yield return currentSequence.WaitForCompletion();
 
         feedbackText.gameObject.SetActive(false);
+        currentSequence = null;
         feedbackCoroutine = null;
     }
 }

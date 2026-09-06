@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2799132397110346016}
   - component: {fileID: 730906870493300065}
   - component: {fileID: 276450869312720877}
+  - component: {fileID: 7558366191507027082}
   m_Layer: 0
   m_Name: CatRight
   m_TagString: Untagged
@@ -190,3 +191,29 @@ SortingGroup:
   m_SortingOrder: 1
   m_SortAtRoot: 0
   m_Sort3DAs2D: 0
+--- !u!114 &7558366191507027082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494958919490901500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65f57de4b6be9940b7cc9cf62b5f710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComboFeedbackController
+  feedbackText: {fileID: 0}
+  lowComboMax: 4
+  midComboMax: 9
+  lowComboMessages:
+  - Sweet!
+  - Nice!
+  midComboMessages:
+  - Yummy!
+  - Delicious!
+  highComboMessages:
+  - Tasty!
+  - Perfect!
+  displayDuration: 1
+  floatUpDistance: 80

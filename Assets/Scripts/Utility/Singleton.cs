@@ -51,7 +51,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private static void RegisterForCleanup()
     {
-        // Đăng ký 1 lần duy nhất
         if (_registered) return;
         _registered = true;
 

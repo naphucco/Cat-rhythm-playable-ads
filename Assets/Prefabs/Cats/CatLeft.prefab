@@ -203,18 +203,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65f57de4b6be9940b7cc9cf62b5f710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboFeedbackController
-  sweetThreshold: 3
-  yummyThreshold: 6
-  tastyThreshold: 10
-  sweetMessages:
+  feedbackText: {fileID: 0}
+  lowComboMax: 4
+  midComboMax: 9
+  lowComboMessages:
   - Sweet!
   - Nice!
-  yummyMessages:
+  midComboMessages:
   - Yummy!
   - Delicious!
-  tastyMessages:
+  highComboMessages:
   - Tasty!
   - Perfect!
-  feedbackText: {fileID: 0}
   displayDuration: 1
   floatUpDistance: 80
