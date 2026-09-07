@@ -30,8 +30,12 @@ A WebGL rhythm-based casual game developed in Unity (URP 2D) where players contr
 
 * **CatMoveController**: Manages cat lane assignments and smooth horizontal snapping based on input.
 * **Input Solutions**:
-* **Touch / Drag-Slide Control (Primary)**: Allows players to touch and drag/slide across the screen or use mouse dragging on desktop. Cats dynamically follow the horizontal coordinate of the input.
-* **Known Trade-off**: the current implementation reads a single global pointer position (`Input.mousePosition`), so both cats currently resolve their target lane from the *same* pointer rather than two fully independent touch points. On a single-cursor desktop this is not noticeable, but on a real multi-touch device two fingers dragging simultaneously would not yet be tracked independently. Given the time constraints, this was accepted as-is; a proper fix would track `Input.touches[]` by touch `fingerId` and assign each active touch to whichever cat's screen half it falls into.
+  * **Touch / Drag-Slide Control (Primary)**: Allows players to touch and drag/slide across the screen or use mouse dragging on desktop. Cats dynamically follow the horizontal coordinate of the input.
+  * **Keyboard Support (Desktop Fallback)**: To improve playability on desktop environments (WebGL builds running in browsers), keyboard controls are also supported:
+    - **Left Cat**: **A** (move left) and **D** (move right) to switch between its assigned lanes.
+    - **Right Cat**: **←** (move left) and **→** (move right) to switch between its assigned lanes.
+    - This provides a reliable alternative when mouse/touch input is unavailable or imprecise, and ensures the game remains fully functional on desktop platforms without requiring multi-touch hardware.
+  * **Known Trade-off**: The primary touch implementation reads a single global pointer position (`Input.mousePosition`), so both cats currently resolve their target lane from the *same* pointer rather than two fully independent touch points. On a single-cursor desktop this is not noticeable, but on a real multi-touch device two fingers dragging simultaneously would not yet be tracked independently. The keyboard fallback partially mitigates this by providing discrete lane-switching controls. Given the time constraints, this was accepted as-is; a proper fix would track `Input.touches[]` by touch `fingerId` and assign each active touch to whichever cat's screen half it falls into.
 
 
 * **Resolution Independence & Layout Management (`LaneManager`)**:

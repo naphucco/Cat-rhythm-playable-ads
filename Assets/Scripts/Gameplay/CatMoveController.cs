@@ -80,8 +80,22 @@ public class CatMoveController : MonoBehaviour
             isDragging = false;
         }
 
-        if (Input.GetMouseButtonDown(0)) isDragging = true;
-        if (Input.GetMouseButtonUp(0)) isDragging = false;
+        if (Input.GetMouseButtonDown(0))
+        {
+            float screenNormalizedX = Input.mousePosition.x / Screen.width;
+            bool isLeftSideOfScreen = screenNormalizedX < 0.5f;
+            bool isThisCatOnLeft = laneStartIndex == 0;
+
+            if (isLeftSideOfScreen == isThisCatOnLeft)
+            {
+                isDragging = true;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+        }
 
         if (isDragging)
         {

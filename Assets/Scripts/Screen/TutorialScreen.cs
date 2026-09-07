@@ -5,8 +5,9 @@ using DG.Tweening;
 /// <summary>
 /// Controls the tutorial sequence: listens for input to start the game, 
 /// animates guide images back and forth, and fades out when gameplay begins.
+/// Supports responsive adjustments for both Portrait and Landscape layouts (Positions & Movement).
 /// </summary>
-public class TutorialController : MonoBehaviour
+public class TutorialScreen : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("Left guide parent RectTransform containing image components.")]
@@ -15,29 +16,35 @@ public class TutorialController : MonoBehaviour
     [Tooltip("Right guide parent RectTransform containing image components.")]
     [SerializeField] private RectTransform rightGuide;
 
-    [Tooltip("Dialog image component (static, does not move, but fades out).")]
+    [Tooltip("Dialog RectTransform for position adjustments between orientations.")]
+    [SerializeField] private RectTransform dialogRect;
+
+    [Tooltip("Dialog image component (fades out).")]
     [SerializeField] private Image dialogImage;
 
     private Image[] leftImages;
     private Image[] rightImages;
 
-    [Header("Movement Settings")]
-    [Tooltip("Distance of back-and-forth movement in pixels.")]
-    [SerializeField] private float moveDistance = 30f;
-    [Tooltip("Duration for a single movement direction.")]
-    [SerializeField] private float moveDuration = 0.6f;
+    [Header("Layout Settings (Portrait)")]
+    [SerializeField] private Vector2 portraitDialogPos = new Vector2(0f, 150f);
+    [SerializeField] private float portraitMoveDistance = 30f;
 
-    [Header("Fade Settings")]
-    [Tooltip("Fade-out duration when the tutorial concludes.")]
+    [Header("Layout Settings (Landscape)")]
+    [SerializeField] private Vector2 landscapeDialogPos = new Vector2(0f, 50f);
+    [SerializeField] private float landscapeMoveDistance = 50f;
+
+    [Header("Animation Settings")]
+    [SerializeField] private float moveDuration = 0.6f;
     [SerializeField] private float fadeDuration = 0.4f;
 
     private Sequence pulseSequence;
 
     private void Awake()
     {
-        // Automatically fetch all Image components from the parent and its children
         if (leftGuide != null) leftImages = leftGuide.GetComponentsInChildren<Image>();
         if (rightGuide != null) rightImages = rightGuide.GetComponentsInChildren<Image>();
+
+        ApplyLayoutSettings();
     }
 
     private void Start()
@@ -57,21 +64,28 @@ public class TutorialController : MonoBehaviour
             GameManager.Instance.OnPlayingStateEntered -= HandlePlayingStateEntered;
         }
 
-        // Kill the sequence to prevent memory leaks
         pulseSequence?.Kill();
     }
 
     private void Update()
     {
-        // Only check for input if the game is currently in the Tutorial state
         if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameManager.GameState.Tutorial)
         {
-            // Detect mouse click or screen touch
             if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
             {
-                // Trigger state change and start the rhythm sequence
                 GameManager.Instance.StartPlaying();
             }
+        }
+    }
+
+    private void ApplyLayoutSettings()
+    {
+        // Dynamically adjust the dialog's anchored position based on the current screen orientation (Portrait vs. Landscape)
+        bool isLandscape = Screen.width > Screen.height;
+
+        if (dialogRect != null)
+        {
+            dialogRect.anchoredPosition = isLandscape ? landscapeDialogPos : portraitDialogPos;
         }
     }
 
@@ -79,27 +93,27 @@ public class TutorialController : MonoBehaviour
     {
         if (leftGuide == null || rightGuide == null) return;
 
-        // Set the infinite loop on the Sequence level instead of individual tweens
         pulseSequence = DOTween.Sequence();
+
+        // Automatically select the movement distance based on the current screen orientation
+        bool isLandscape = Screen.width > Screen.height;
+        float currentMoveDistance = isLandscape ? landscapeMoveDistance : portraitMoveDistance;
 
         Vector2 leftOriginalPos = leftGuide.anchoredPosition;
         Vector2 rightOriginalPos = rightGuide.anchoredPosition;
 
-        pulseSequence.Join(leftGuide.DOAnchorPosX(leftOriginalPos.x - moveDistance, moveDuration).SetEase(Ease.InOutSine));
-        pulseSequence.Join(rightGuide.DOAnchorPosX(rightOriginalPos.x + moveDistance, moveDuration).SetEase(Ease.InOutSine));
+        pulseSequence.Join(leftGuide.DOAnchorPosX(leftOriginalPos.x - currentMoveDistance, moveDuration).SetEase(Ease.InOutSine));
+        pulseSequence.Join(rightGuide.DOAnchorPosX(rightOriginalPos.x + currentMoveDistance, moveDuration).SetEase(Ease.InOutSine));
 
-        // Apply infinite loop to the entire Sequence
         pulseSequence.SetLoops(-1, LoopType.Yoyo);
     }
 
     private void HandlePlayingStateEntered()
     {
-        // Stop looping movement immediately
         pulseSequence?.Kill();
 
         float duration = fadeDuration;
 
-        // Fade out all images found in the left guide hierarchy
         if (leftImages != null)
         {
             foreach (var img in leftImages)
@@ -108,7 +122,6 @@ public class TutorialController : MonoBehaviour
             }
         }
 
-        // Fade out all images found in the right guide hierarchy
         if (rightImages != null)
         {
             foreach (var img in rightImages)
@@ -117,7 +130,6 @@ public class TutorialController : MonoBehaviour
             }
         }
 
-        // Fade out the dialog image
         if (dialogImage != null)
         {
             dialogImage.DOFade(0f, duration);
