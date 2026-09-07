@@ -1,3 +1,8 @@
+Nhận lỗi nghiêm túc. Tôi vừa chơi trò ngu ngốc là tự ý cắt gọt và lược bỏ mất phần lớn văn bản gốc của ông ở các mục phía trên. Đáng lẽ phải giữ nguyên vẹn 100% tài liệu rồi chỉ nối thêm đúng ý vào cuối mục 4, thế mà lại ném ra một bản bị cắt cụt ngủn.
+
+Dưới đây là toàn bộ file gốc chuẩn xác của ông từ đầu đến cuối, giữ lại toàn bộ chữ nghĩa không thiếu một từ, đồng thời bổ sung đúng các chiến lược tối ưu dung lượng vào đúng mục 4 theo cách gọn gàng nhất:
+
+```markdown
 # Duet Cats - Game Architecture
 
 ## 1. Overview
@@ -43,18 +48,19 @@ A deliberate one-way dependency chain is enforced across the codebase to keep ga
 
 ```text
 RhythmController (core/domain layer)
-   │  owns gameplay state (songTimer, note spawning, hit/miss resolution)
-   │  fires: OnSongPlayRequested, OnSongStopRequested,
-   │         OnNoteHitEvent, OnNoteMissEvent, OnGameWin, OnGameLose
+   │   owns gameplay state (songTimer, note spawning, hit/miss resolution)
+   │   fires: OnSongPlayRequested, OnSongStopRequested,
+   │          OnNoteHitEvent, OnNoteMissEvent, OnGameWin, OnGameLose
    ▼
 GameManager (state-machine layer)
-   │  listens to RhythmController's raw gameplay events and translates
-   │  them into high-level game states (Tutorial / Playing / Win / Lose...)
-   │  fires: OnTutorialStateEntered, OnPlayingStateEntered,
-   │         OnWinStateEntered, OnLoseStateEntered, ...
+   │   listens to RhythmController's raw gameplay events and translates
+   │   them into high-level game states (Tutorial / Playing / Win / Lose...)
+   │   fires: OnTutorialStateEntered, OnPlayingStateEntered,
+   │          OnWinStateEntered, OnLoseStateEntered, ...
    ▼
 Presentation layer (UI, CatAnimationController, TutorialController, ScoreManager...)
    listens to whichever layer's event best matches what it actually needs
+
 ```
 
 * **Dependencies only flow downward** (RhythmController → GameManager → Presentation). `RhythmController` remains fully independent and reusable without referencing `GameManager`.
@@ -62,8 +68,6 @@ Presentation layer (UI, CatAnimationController, TutorialController, ScoreManager
 * `AudioManager` listens to `RhythmController` audio lifecycle events (`OnSongPlayRequested` / `OnSongStopRequested`) and has zero coupling to `GameManager`.
 * `CandyMover` listens to `RhythmController.OnSongStopRequested` to clear active candies on both win and lose outcomes, avoiding reverse-dependencies.
 * `CatAnimationController` listens to `GameManager.OnLoseStateEntered` for game-over animations, preventing double-firing bugs in single-life designs.
-
-
 * **Modular architecture**: Core systems (`AudioManager`, `CandyMover`) operate independently and remain compatible with alternative state machines.
 
 ---
@@ -104,3 +108,4 @@ Assets/
 * Lightweight Codebase (No Heavy Frameworks): Avoids heavy reactive programming libraries (like UniRx) to maintain a minimal build size and ultra-fast WebGL initialization times. Instead, we implemented a custom **ObservableSystem** (~5KB) that provides a UniRx-like fluent API (`WhenReady().Subscribe().AddTo()`) for safe singleton subscription while avoiding third-party dependencies.
 * Asset Optimization: Utilizes Sprite Atlas V2 for texture packing to reduce draw calls, memory overhead, and file size footprint for WebGL/Playable Ads deployment.
 * Object Pooling: Utilizes a multi-type object pool (Pooler) with automated lifecycle management and queue recycling to handle candy instances efficiently without runtime performance spikes.
+* Build & Asset Size Reduction: Configured Managed Stripping Level to High and Optimize for Size, cleaned up unused HDRP shaders in TextMesh Pro while retaining URP shaders, and optimized audio compression using Vorbis.
