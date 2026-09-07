@@ -38,10 +38,10 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlaySong()
     {
-        if (songAudioSource != null && !songAudioSource.isPlaying)
-        {
-            songAudioSource.Play();
-        }
+        if (songAudioSource == null)
+            return;
+
+        songAudioSource.Play();
     }
 
     public void StopSong()

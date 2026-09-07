@@ -36,6 +36,15 @@ public class TutorialScreen : MonoBehaviour
 
     private Sequence pulseSequence;
 
+    private void Awake()
+    {
+        if (leftGuide != null)
+            leftImages = leftGuide.GetComponentsInChildren<Image>();
+
+        if (rightGuide != null)
+            rightImages = rightGuide.GetComponentsInChildren<Image>();
+    }
+
     private void Start()
     {
         if (GameManager.Instance != null)

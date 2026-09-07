@@ -15,6 +15,10 @@ public class CatMoveController : MonoBehaviour
     [SerializeField] private KeyCode moveLeftKey = KeyCode.A;
     [SerializeField] private KeyCode moveRightKey = KeyCode.D;
 
+    [Header("Touch Controls")]
+    [SerializeField] private bool useTouchInput = true;
+    private int activeFingerId = -1;
+
     private float[] assignedLaneXPositions;
     private Camera mainCamera;
     private bool isDragging = false;
@@ -69,6 +73,9 @@ public class CatMoveController : MonoBehaviour
     {
         if (assignedLaneXPositions == null || assignedLaneXPositions.Length == 0) return;
 
+        // ==========================================
+        // KEYBOARD CONTROLS (Great for Desktop/WebGL)
+        // ==========================================
         if (Input.GetKeyDown(moveLeftKey))
         {
             currentLaneIndex = Mathf.Clamp(currentLaneIndex - 1, 0, assignedLaneXPositions.Length - 1);
@@ -80,6 +87,72 @@ public class CatMoveController : MonoBehaviour
             isDragging = false;
         }
 
+        // ==========================================
+        // TOUCH & MOUSE INPUT SEPARATION
+        // ==========================================
+        if (useTouchInput && Input.touchCount > 0)
+        {
+            HandleTouchInput();
+        }
+        else
+        {
+            HandleMouseInput();
+        }
+    }
+
+    void HandleTouchInput()
+    {
+        bool isThisCatLeft = laneStartIndex == 0;
+        bool fingerStillActive = false;
+
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+            float normalizedX = touch.position.x / Screen.width;
+            bool isLeftSide = normalizedX < 0.5f;
+
+            // Touch Began: Claim the new touch if it falls into this cat's designated side
+            if (touch.phase == TouchPhase.Began)
+            {
+                if (isLeftSide == isThisCatLeft)
+                {
+                    if (activeFingerId == -1)
+                    {
+                        activeFingerId = touch.fingerId;
+                        isDragging = true;
+                    }
+                }
+            }
+
+            // Track the specific finger assigned to this cat
+            if (touch.fingerId == activeFingerId)
+            {
+                fingerStillActive = true;
+
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                {
+                    Vector3 worldPos = mainCamera.ScreenToWorldPoint(touch.position);
+                    currentLaneIndex = LaneManager.Instance.GetClosestLaneIndex(assignedLaneXPositions, worldPos.x);
+                }
+
+                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    activeFingerId = -1;
+                    isDragging = false;
+                }
+            }
+        }
+
+        // Failsafe in case the tracked touch is lost abruptly
+        if (activeFingerId != -1 && !fingerStillActive)
+        {
+            activeFingerId = -1;
+            isDragging = false;
+        }
+    }
+
+    void HandleMouseInput()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             float screenNormalizedX = Input.mousePosition.x / Screen.width;
@@ -100,8 +173,6 @@ public class CatMoveController : MonoBehaviour
         if (isDragging)
         {
             Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-            // Find the closest lane index within this cat's assigned viewport X subset
             currentLaneIndex = LaneManager.Instance.GetClosestLaneIndex(assignedLaneXPositions, mouseWorldPos.x);
         }
     }
