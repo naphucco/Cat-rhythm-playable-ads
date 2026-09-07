@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using DG.Tweening;
 using System;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manages score tracking and UI updates by subscribing to RhythmController hit events.
@@ -14,6 +15,7 @@ public class ScoreManager : Singleton<ScoreManager>
     [SerializeField] private SongSettings songSettings;
     [Tooltip("Optional UI Text component to display the current score.")]
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private GameObject heathImage;
 
     [Header("Score Animation Settings")]
     [Tooltip("Scale multiplier when the score updates.")]
@@ -26,7 +28,8 @@ public class ScoreManager : Singleton<ScoreManager>
 
     private Vector3 originalScale = Vector3.one;
 
-    private IDisposable _subscription;
+    private IDisposable _hitSubscription;
+    private IDisposable _stateSubscription;
 
     protected override void Awake()
     {
@@ -40,16 +43,22 @@ public class ScoreManager : Singleton<ScoreManager>
 
     private void OnEnable()
     {
-        _subscription = this.WhenReady(() => RhythmController.Instance)
+        _hitSubscription = this.WhenReady(() => RhythmController.Instance)
             .Subscribe(this, controller => controller.OnNoteHitEvent += HandleNoteHit)
+            .AddTo(this);
+
+        _stateSubscription = this.WhenReady(() => GameManager.Instance)
+            .Subscribe(this, mgr =>
+            {
+                mgr.OnPickNextSongStateEntered += HandlePickNextSongState;
+            })
             .AddTo(this);
     }
 
     private void OnDisable()
     {
-        // No need to unsubscribe manually since AddTo has already handled it
-        // But if you want to be safe, you still can:
-        _subscription?.Dispose();
+        _hitSubscription?.Dispose();
+        _stateSubscription?.Dispose();
     }
 
     private void HandleNoteHit(int laneIndex, ObjectType candyType)
@@ -71,6 +80,19 @@ public class ScoreManager : Singleton<ScoreManager>
             scoreText.transform.DOKill(true);
             scoreText.transform.DOScale(originalScale * (1f + punchScaleAmount), animationDuration / 2f)
                 .SetLoops(2, LoopType.Yoyo);
+        }
+    }
+
+    private void HandlePickNextSongState()
+    {
+        if (scoreText != null)
+        {
+            scoreText.gameObject.SetActive(false);
+        }
+
+        if (heathImage != null)
+        {
+            heathImage.SetActive(false);
         }
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1095141832757942778}
   - component: {fileID: 2057152911276718898}
   - component: {fileID: 8325502921007191811}
+  - component: {fileID: 2196533589817209813}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoseScreenController
   selectSongMenu: {fileID: 0}
+  selectSongAnimation: {fileID: 2196533589817209813}
   holeEffect: {fileID: 2057152911276718898}
   handEffect: {fileID: 8325502921007191811}
   delayBeforeClose: 1.2
@@ -86,3 +88,24 @@ MonoBehaviour:
   startScale: {x: 0, y: 0, z: 0}
   peakScale: {x: 1.2, y: 1.2, z: 1.2}
   endScale: {x: 0, y: 0, z: 0}
+--- !u!114 &2196533589817209813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704905085434649044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7597f90885547742b5b35555ec45ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectSongLoop
+  handImage: {fileID: 0}
+  song1Image: {fileID: 0}
+  song2Image: {fileID: 0}
+  moveDuration: 1.2
+  punchDuration: 0.8
+  handZoomScale: 0.8
+  cardZoomScale: 1.1
+  handPunchAngle: 30
+  fingerOffset: {x: 32, y: -64}

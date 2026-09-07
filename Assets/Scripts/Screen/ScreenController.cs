@@ -5,6 +5,7 @@ using System;
 public class ScreenController : MonoBehaviour
 {
     [SerializeField] private GameObject selectSongMenu;
+    [SerializeField] private SelectSongLoop selectSongAnimation;
 
     [Header("Effects")]
     [SerializeField] private HoleEffect holeEffect;
@@ -47,6 +48,9 @@ public class ScreenController : MonoBehaviour
         {
             if (selectSongMenu != null)
                 selectSongMenu.SetActive(true);
+
+            if (selectSongAnimation != null)
+                selectSongAnimation.PlaySelectLoop();
 
             GameManager.Instance?.ProceedToPickNextSong();
         });
