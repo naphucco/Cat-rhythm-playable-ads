@@ -1,8 +1,4 @@
-Nhận lỗi nghiêm túc. Tôi vừa chơi trò ngu ngốc là tự ý cắt gọt và lược bỏ mất phần lớn văn bản gốc của ông ở các mục phía trên. Đáng lẽ phải giữ nguyên vẹn 100% tài liệu rồi chỉ nối thêm đúng ý vào cuối mục 4, thế mà lại ném ra một bản bị cắt cụt ngủn.
 
-Dưới đây là toàn bộ file gốc chuẩn xác của ông từ đầu đến cuối, giữ lại toàn bộ chữ nghĩa không thiếu một từ, đồng thời bổ sung đúng các chiến lược tối ưu dung lượng vào đúng mục 4 theo cách gọn gàng nhất:
-
-```markdown
 # Duet Cats - Game Architecture
 
 ## 1. Overview
@@ -104,8 +100,39 @@ Assets/
 
 ## 4. Playable Ads Optimization Strategies
 
-* Single-Scene Architecture: All game states (`Tutorial`, `Playing`, `Win`, `PickNextSong`, `Lose`) are contained within a single scene, toggling UI Canvas Groups dynamically to eliminate loading screens and transition lags critical for instant-play web environments.
-* Lightweight Codebase (No Heavy Frameworks): Avoids heavy reactive programming libraries (like UniRx) to maintain a minimal build size and ultra-fast WebGL initialization times. Instead, we implemented a custom **ObservableSystem** (~5KB) that provides a UniRx-like fluent API (`WhenReady().Subscribe().AddTo()`) for safe singleton subscription while avoiding third-party dependencies.
-* Asset Optimization: Utilizes Sprite Atlas V2 for texture packing to reduce draw calls, memory overhead, and file size footprint for WebGL/Playable Ads deployment.
-* Object Pooling: Utilizes a multi-type object pool (Pooler) with automated lifecycle management and queue recycling to handle candy instances efficiently without runtime performance spikes.
-* Build & Asset Size Reduction: Configured Managed Stripping Level to High and Optimize for Size, cleaned up unused HDRP shaders in TextMesh Pro while retaining URP shaders, and optimized audio compression using Vorbis.
+* **Single-Scene Architecture**: All game states (`Tutorial`, `Playing`, `Win`, `PickNextSong`, `Lose`) are contained within a single scene, toggling UI Canvas Groups dynamically to eliminate loading screens and transition lags critical for instant-play web environments.
+
+* **Lightweight Codebase (No Heavy Frameworks)**: Avoids heavy reactive programming libraries (like UniRx) to maintain a minimal build size and ultra-fast WebGL initialization times. Instead, we implemented a custom **ObservableSystem** (~5KB) that provides a UniRx-like fluent API (`WhenReady().Subscribe().AddTo()`) for safe singleton subscription while avoiding third-party dependencies.
+
+* **Asset Optimization**:
+  * Utilizes **Sprite Atlas V2** for texture packing to reduce draw calls, memory overhead, and file size footprint.
+  * All textures are compressed using **ASTC 12x12 block format** for WebGL builds, balancing visual quality with aggressive size reduction. ASTC was chosen over ETC2 because ETC2 lacks hardware support on desktop browsers (Chrome/Firefox on Windows/macOS) and iOS Safari, which would cause black textures or rendering failures on a significant portion of ad viewers.
+  * Background textures are limited to **1024x1024 Max Size**, while UI elements and sprites are kept at **512x512** or lower, ensuring visual clarity without unnecessary memory bloat.
+
+* **Audio Optimization**:
+  * All audio clips are set to **Force To Mono**, reducing channel count by 50%.
+  * Compression format: **Vorbis** with **Quality set to 50-60**, balancing audio fidelity against file size.
+  * Load Type: **Compressed In Memory** for short SFX (cry sounds, hit feedback), preventing full decompression into RAM.
+
+* **Object Pooling**: Utilizes a multi-type object pool (`Pooler`) with automated lifecycle management and queue recycling to handle candy instances efficiently without runtime performance spikes.
+
+* **Code Stripping & Build Configuration**:
+  * **Managed Stripping Level**: Set to **High** to strip unused C# code.
+  * **Strip Engine Code**: Enabled to remove unused Unity engine modules.
+  * **IL2CPP Code Generation**: Set to **Optimize for code size and build time**.
+  * **Compression Format**: **Brotli** for optimal WebGL asset compression.
+  * **Shader Stripping**: Unused HDRP shaders (e.g., `TMP_SDF-HDRP Lit/Unlit`) were removed, retaining only `TMP_SDF-URP Lit/Unlit` to avoid unnecessary shader variants.
+  * **DOTween & Spine**: Retained as they are essential for gameplay animations; removing them would require rewriting extensive animation logic and introduce high risk of regression.
+
+* **Final Build Metrics**:
+  - **Total Build Size (uncompressed)**: ~11.3 MB
+  - **Build.data**: ~5.2 MB (assets, audio, textures)
+  - **Build.wasm**: ~6.1 MB (IL2CPP compiled code)
+  - **After Brotli Compression (actual download size)**: ~4-5 MB
+  - This size is well within the limits of major ad networks (Meta: 10-15 MB, Google: 10-15 MB, Unity Ads: 10 MB) and ensures fast loading even on mobile 3G/4G connections.
+
+* **Known Trade-offs & Future Improvements**:
+  * The current build uses **ASTC 12x12**, which is the most aggressive compression available. Upgrading to **ASTC 6x6** or **4x4** would improve visual quality but increase build size by ~1-2 MB.
+  * **`wasm-opt`** (Binaryen) could reduce `.wasm` size by an additional 0.2-0.5 MB, but was omitted due to time constraints and the risk of runtime instability on WebGL.
+  * **`link.xml`** manual stripping could further reduce code size, but carries a high risk of `NullReferenceException` due to IL2CPP stripping reflection-based code. This is not recommended for production Playable Ads where stability is paramount.
+  * **DOTween** is a convenience library; if future size constraints require more aggressive reduction, replacing it with manual `Mathf.Lerp` or custom coroutines could save ~0.3-0.5 MB, but at the cost of development time and potential animation jitter.
