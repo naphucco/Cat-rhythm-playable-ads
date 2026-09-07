@@ -49,6 +49,7 @@ MonoBehaviour:
   songAudioSource: {fileID: 4485614694118314282}
   sfxAudioSource: {fileID: 9108012031303760909}
   crySound: {fileID: 8300000, guid: cb30b79d1dc3a84458eb5156029edbbf, type: 3}
+  mooewSound: {fileID: 8300000, guid: 339729ba8da88db4b8cf6b258d8156dc, type: 3}
 --- !u!1 &5556753253622858071
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +226,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

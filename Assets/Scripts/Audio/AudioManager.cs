@@ -9,6 +9,7 @@ public class AudioManager : Singleton<AudioManager>
     [Header("SFX")]
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioClip crySound;
+    [SerializeField] private AudioClip mooewSound; // Added clip for win/mooew sound
 
     public bool IsPlaying => songAudioSource != null && songAudioSource.isPlaying;
     public float CurrentAudioTime => songAudioSource != null ? songAudioSource.time : 0f;
@@ -25,6 +26,7 @@ public class AudioManager : Singleton<AudioManager>
                 controller.OnSongPlayRequested += PlaySong;
                 controller.OnSongStopRequested += StopSong;
                 controller.OnGameLose += PlayCrySound;
+                controller.OnGameWin += PlayMooewSound; // Subscribed to win event
             })
             .AddTo(this);
     }
@@ -55,6 +57,14 @@ public class AudioManager : Singleton<AudioManager>
         if (sfxAudioSource != null && crySound != null)
         {
             sfxAudioSource.PlayOneShot(crySound);
+        }
+    }
+
+    public void PlayMooewSound()
+    {
+        if (sfxAudioSource != null && mooewSound != null)
+        {
+            sfxAudioSource.PlayOneShot(mooewSound);
         }
     }
 }
