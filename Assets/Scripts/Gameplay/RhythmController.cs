@@ -151,7 +151,7 @@ public class RhythmController : Singleton<RhythmController>
             var mover = candy.GetComponent<CandyMover>();
             if (mover != null)
             {
-                float hitLineY = LaneManager.Instance.HitLineY;
+                float hitLineY = LaneManager.Instance.DeathLineY;
 
                 mover.Initialize(
                     candyID,

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteAlways]
 public class LaneManager : Singleton<LaneManager>
 {
     [Header("Lane Viewport Setup (Portrait)")]
@@ -10,13 +11,14 @@ public class LaneManager : Singleton<LaneManager>
     [Tooltip("Normalized horizontal positions for Landscape mode (clamped closer to center).")]
     [SerializeField] private float[] landscapeLaneViewportX = new float[] { 0.35f, 0.45f, 0.55f, 0.65f };
 
-    [Header("Vertical Heights Setup")]
+    [Header("Hitline")]
+    [SerializeField] private float portraitHitLineViewportY = 0.18f;
+    [SerializeField] private float landscapeHitLineViewportY = 0.25f;
+
     [Tooltip("Viewport Y position where candies spawn (1.0 is the top edge of the screen).")]
     [SerializeField] private float spawnViewportY = 1.05f;
 
-    [Header("Layout Settings")]
-    [SerializeField] private float hitLineViewportY = 0.18f;
-    public float HitLineY { get; private set; }
+    public float DeathLineY { get; private set; }
 
     private Camera mainCamera;
 
@@ -25,9 +27,26 @@ public class LaneManager : Singleton<LaneManager>
         base.Awake();
 
         mainCamera = Camera.main;
+        CalculateHitLine();
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        // Tự động tính lại khi thay đổi độ phân giải hoặc xoay màn hình (cả Editor lẫn Runtime)
+        CalculateHitLine();
+    }
+
+    private void CalculateHitLine()
+    {
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
         if (mainCamera != null)
         {
-            HitLineY = mainCamera.ViewportToWorldPoint(new Vector3(0f, hitLineViewportY, -mainCamera.transform.position.z)).y;
+            bool isLandscape = Screen.width > Screen.height;
+            float activeHitLineY = isLandscape ? landscapeHitLineViewportY : portraitHitLineViewportY;
+            
+            DeathLineY = mainCamera.ViewportToWorldPoint(new Vector3(0f, activeHitLineY, -mainCamera.transform.position.z)).y;
         }
     }
 

@@ -31,7 +31,7 @@ public class CatMoveController : MonoBehaviour
 
         if (LaneManager.Instance != null)
         {
-            initialY = LaneManager.Instance.HitLineY + catVisualOffsetY;
+            initialY = LaneManager.Instance.DeathLineY + catVisualOffsetY;
             assignedLaneXPositions = LaneManager.Instance.GetLaneXSlice(laneStartIndex, laneCount);
 
             if (assignedLaneXPositions != null && assignedLaneXPositions.Length > 0)
