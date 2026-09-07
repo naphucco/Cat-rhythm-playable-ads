@@ -18,9 +18,6 @@ public class TutorialScreen : MonoBehaviour
     [Tooltip("Right guide parent RectTransform containing image components.")]
     [SerializeField] private RectTransform rightGuide;
 
-    [Tooltip("Dialog RectTransform for position adjustments between orientations.")]
-    [SerializeField] private RectTransform dialogRect;
-
     [Tooltip("Dialog image component (fades out).")]
     [SerializeField] private Image dialogImage;
 
@@ -28,11 +25,9 @@ public class TutorialScreen : MonoBehaviour
     private Image[] rightImages;
 
     [Header("Layout Settings (Portrait)")]
-    [SerializeField] private Vector2 portraitDialogPos = new Vector2(0f, 150f);
     [SerializeField] private float portraitMoveDistance = 30f;
 
     [Header("Layout Settings (Landscape)")]
-    [SerializeField] private Vector2 landscapeDialogPos = new Vector2(0f, 50f);
     [SerializeField] private float landscapeMoveDistance = 50f;
 
     [Header("Animation Settings")]
@@ -40,11 +35,6 @@ public class TutorialScreen : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.4f;
 
     private Sequence pulseSequence;
-
-    private void Awake()
-    {
-        ApplyLayoutSettings();
-    }
 
     private void Start()
     {
@@ -74,17 +64,6 @@ public class TutorialScreen : MonoBehaviour
             {
                 GameManager.Instance.StartPlaying();
             }
-        }
-    }
-
-    private void ApplyLayoutSettings()
-    {
-        // Dynamically adjust the dialog's anchored position based on the current screen orientation (Portrait vs. Landscape)
-        bool isLandscape = Screen.width > Screen.height;
-
-        if (dialogRect != null)
-        {
-            dialogRect.anchoredPosition = isLandscape ? landscapeDialogPos : portraitDialogPos;
         }
     }
 
