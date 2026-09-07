@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2057152911276718898}
   - component: {fileID: 8325502921007191811}
   - component: {fileID: 2196533589817209813}
-  - component: {fileID: 7682059400844762892}
   - component: {fileID: 3810158657458103012}
   m_Layer: 0
   m_Name: ScreenManager
@@ -111,22 +110,6 @@ MonoBehaviour:
   cardZoomScale: 1.1
   handPunchAngle: 30
   fingerOffset: {x: 32, y: -64}
---- !u!114 &7682059400844762892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd71326f004bf464e83b214540f70943, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OrientationManager
-  portraitBackground: {fileID: 0}
-  landscapeBackground: {fileID: 0}
-  portraitCanvas: {fileID: 0}
-  landscapeCanvas: {fileID: 0}
 --- !u!114 &3810158657458103012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f6cb65dc1ce27488e2cfaf61ad62f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialController
+  tutorialContainer: {fileID: 0}
   leftGuide: {fileID: 0}
   rightGuide: {fileID: 0}
   dialogRect: {fileID: 0}

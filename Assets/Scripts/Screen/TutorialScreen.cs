@@ -10,6 +10,8 @@ using DG.Tweening;
 public class TutorialScreen : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private GameObject tutorialContainer;
+
     [Tooltip("Left guide parent RectTransform containing image components.")]
     [SerializeField] private RectTransform leftGuide;
 
@@ -41,9 +43,6 @@ public class TutorialScreen : MonoBehaviour
 
     private void Awake()
     {
-        if (leftGuide != null) leftImages = leftGuide.GetComponentsInChildren<Image>();
-        if (rightGuide != null) rightImages = rightGuide.GetComponentsInChildren<Image>();
-
         ApplyLayoutSettings();
     }
 
@@ -53,7 +52,7 @@ public class TutorialScreen : MonoBehaviour
         {
             GameManager.Instance.OnPlayingStateEntered += HandlePlayingStateEntered;
         }
-
+        tutorialContainer.SetActive(true);
         StartMovement();
     }
 

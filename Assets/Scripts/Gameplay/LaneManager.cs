@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class LaneManager : Singleton<LaneManager>
 {
-    [Header("Lane Viewport Setup (X ranges from 0.0 to 1.0 across the screen)")]
-    [Tooltip("Normalized horizontal positions (0 to 1) for each lane across the screen width.")]
-    [SerializeField] private float[] laneViewportX = new float[] { 0.2f, 0.4f, 0.6f, 0.8f };
+    [Header("Lane Viewport Setup (Portrait)")]
+    [Tooltip("Normalized horizontal positions for Portrait mode.")]
+    [SerializeField] private float[] portraitLaneViewportX = new float[] { 0.2f, 0.4f, 0.6f, 0.8f };
+
+    [Header("Lane Viewport Setup (Landscape)")]
+    [Tooltip("Normalized horizontal positions for Landscape mode (clamped closer to center).")]
+    [SerializeField] private float[] landscapeLaneViewportX = new float[] { 0.35f, 0.45f, 0.55f, 0.65f };
 
     [Header("Vertical Heights Setup")]
     [Tooltip("Viewport Y position where candies spawn (1.0 is the top edge of the screen).")]
@@ -20,9 +24,20 @@ public class LaneManager : Singleton<LaneManager>
     {
         base.Awake();
 
-        Camera mainCam = Camera.main;
-        HitLineY = mainCam.ViewportToWorldPoint(new Vector3(0f, hitLineViewportY, -mainCam.transform.position.z)).y;
         mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            HitLineY = mainCamera.ViewportToWorldPoint(new Vector3(0f, hitLineViewportY, -mainCamera.transform.position.z)).y;
+        }
+    }
+
+    /// <summary>
+    /// Gets the appropriate lane array based on current screen orientation.
+    /// </summary>
+    private float[] GetActiveLaneViewportX()
+    {
+        bool isLandscape = Screen.width > Screen.height;
+        return isLandscape ? landscapeLaneViewportX : portraitLaneViewportX;
     }
 
     /// <summary>
@@ -30,16 +45,21 @@ public class LaneManager : Singleton<LaneManager>
     /// </summary>
     public float[] GetLaneXSlice(int startIndex, int count)
     {
-        if (laneViewportX == null || count <= 0) return new float[0];
+        float[] activeLanes = GetActiveLaneViewportX();
 
-        startIndex = Mathf.Clamp(startIndex, 0, laneViewportX.Length);
-        count = Mathf.Clamp(count, 0, laneViewportX.Length - startIndex);
+        if (activeLanes == null || count <= 0) return new float[0];
+
+        startIndex = Mathf.Clamp(startIndex, 0, activeLanes.Length);
+        count = Mathf.Clamp(count, 0, activeLanes.Length - startIndex);
 
         float[] slice = new float[count];
         for (int i = 0; i < count; i++)
         {
-            Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(laneViewportX[startIndex + i], 0f, -mainCamera.transform.position.z));
-            slice[i] = worldPos.x;
+            if (mainCamera != null)
+            {
+                Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(activeLanes[startIndex + i], 0f, -mainCamera.transform.position.z));
+                slice[i] = worldPos.x;
+            }
         }
         return slice;
     }
@@ -72,9 +92,11 @@ public class LaneManager : Singleton<LaneManager>
     /// </summary>
     public Vector3 GetSpawnPosition(int laneIndex)
     {
-        if (laneViewportX != null && laneIndex >= 0 && laneIndex < laneViewportX.Length)
+        float[] activeLanes = GetActiveLaneViewportX();
+
+        if (activeLanes != null && laneIndex >= 0 && laneIndex < activeLanes.Length && mainCamera != null)
         {
-            Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(laneViewportX[laneIndex], spawnViewportY, -mainCamera.transform.position.z));
+            Vector3 worldPos = mainCamera.ViewportToWorldPoint(new Vector3(activeLanes[laneIndex], spawnViewportY, -mainCamera.transform.position.z));
             worldPos.z = 0f;
             return worldPos;
         }
