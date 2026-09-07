@@ -152,6 +152,8 @@ MonoBehaviour:
   initialLaneIndex: 0
   snapSpeed: 20
   catVisualOffsetY: -1
+  moveLeftKey: 97
+  moveRightKey: 100
 --- !u!114 &8848821121651980219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,3 +219,8 @@ MonoBehaviour:
   - Perfect!
   displayDuration: 1
   floatUpDistance: 80
+  initialScale: 0.5
+  peakScale: 1.2
+  scaleDuration: 0.2
+  fadeOutDuration: 0.4
+  verticalOffset: 1.5

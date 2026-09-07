@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CatMoveController : MonoBehaviour
@@ -11,6 +10,10 @@ public class CatMoveController : MonoBehaviour
 
     [Header("Visual Adjustment")]
     [SerializeField] private float catVisualOffsetY = -0.5f;
+
+    [Header("Keyboard Controls")]
+    [SerializeField] private KeyCode moveLeftKey = KeyCode.A;
+    [SerializeField] private KeyCode moveRightKey = KeyCode.D;
 
     private float[] assignedLaneXPositions;
     private Camera mainCamera;
@@ -64,10 +67,23 @@ public class CatMoveController : MonoBehaviour
 
     void HandleInputAndSnap()
     {
+        if (assignedLaneXPositions == null || assignedLaneXPositions.Length == 0) return;
+
+        if (Input.GetKeyDown(moveLeftKey))
+        {
+            currentLaneIndex = Mathf.Clamp(currentLaneIndex - 1, 0, assignedLaneXPositions.Length - 1);
+            isDragging = false;
+        }
+        else if (Input.GetKeyDown(moveRightKey))
+        {
+            currentLaneIndex = Mathf.Clamp(currentLaneIndex + 1, 0, assignedLaneXPositions.Length - 1);
+            isDragging = false;
+        }
+
         if (Input.GetMouseButtonDown(0)) isDragging = true;
         if (Input.GetMouseButtonUp(0)) isDragging = false;
 
-        if (isDragging && assignedLaneXPositions != null && assignedLaneXPositions.Length > 0)
+        if (isDragging)
         {
             Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 

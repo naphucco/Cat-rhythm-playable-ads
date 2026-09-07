@@ -11,11 +11,11 @@ public class CatAnimationController : MonoBehaviour
     private CatMoveController moveController;
 
     [Header("Animation Pools (Multiple Variants)")]
-    [SpineAnimation] [SerializeField] private string[] startAnims;
-    [SpineAnimation] [SerializeField] private string[] eatAnims;
-    [SpineAnimation] [SerializeField] private string[] missAnims;
-    [SpineAnimation] [SerializeField] private string[] victoryAnims;
-    [SpineAnimation] [SerializeField] private string[] idleAnims;
+    [SpineAnimation][SerializeField] private string[] startAnims;
+    [SpineAnimation][SerializeField] private string[] eatAnims;
+    [SpineAnimation][SerializeField] private string[] missAnims;
+    [SpineAnimation][SerializeField] private string[] victoryAnims;
+    [SpineAnimation][SerializeField] private string[] idleAnims;
 
     [Header("Idle Settings")]
     [SerializeField] private float idleInterval = 4f;
@@ -42,6 +42,7 @@ public class CatAnimationController : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnLoseStateEntered += HandleLoseStateEntered;
+            GameManager.Instance.OnWinStateEntered += HandleWinStateEntered;
         }
 
         if (skeletonAnimation != null && skeletonAnimation.AnimationState != null)
@@ -60,6 +61,7 @@ public class CatAnimationController : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnLoseStateEntered -= HandleLoseStateEntered;
+            GameManager.Instance.OnWinStateEntered -= HandleWinStateEntered;
         }
 
         if (skeletonAnimation != null && skeletonAnimation.AnimationState != null)
@@ -114,6 +116,12 @@ public class CatAnimationController : MonoBehaviour
         isGameOver = true;
         // Ensure both cats play miss animation and stay locked without returning to idle
         PlayMiss();
+    }
+
+    private void HandleWinStateEntered()
+    {
+        isGameOver = true;
+        PlayVictory();
     }
 
     private bool IsMyLane(int laneIndex)

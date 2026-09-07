@@ -27,6 +27,7 @@ public class ScreenController : MonoBehaviour
             .Subscribe(this, mgr =>
             {
                 mgr.OnLoseStateEntered += PlayScreenSequence;
+                mgr.OnWinStateEntered += PlayScreenSequence;
             })
             .AddTo(this);
     }

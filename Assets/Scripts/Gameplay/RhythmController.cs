@@ -10,6 +10,7 @@ public class RhythmController : Singleton<RhythmController>
 {
     [Header("Game Configuration")]
     [SerializeField] private bool autoStart;
+    [SerializeField] private float winDelay = 0.3f;
 
     [Header("Data Configuration")]
     [Tooltip("Reference to the global SongSettings ScriptableObject asset containing thresholds and timings.")]
@@ -24,6 +25,10 @@ public class RhythmController : Singleton<RhythmController>
     [Header("Lane Mapping Rules")]
     [Tooltip("Define which lane indices correspond to Cat 1 (left) vs Cat 2 (right) for candy type resolution.")]
     [SerializeField] private int cat1MaxLaneIndex = 1;
+
+
+    [Header("Testing")]
+    [SerializeField] private bool skipMiss = false;
 
     private List<NoteData> allNotes = new List<NoteData>();
     private int currentIndex = 0;
@@ -117,7 +122,7 @@ public class RhythmController : Singleton<RhythmController>
         if (currentIndex >= allNotes.Count && allNotes.Count > 0)
         {
             float lastNoteTime = allNotes[allNotes.Count - 1].ta;
-            if (songTimer > lastNoteTime + 2.0f)
+            if (songTimer > lastNoteTime + winDelay)
             {
                 TriggerWin();
             }
@@ -194,7 +199,8 @@ public class RhythmController : Singleton<RhythmController>
     /// Callback executed when a candy passes the hit line without being caught and reaches the bottom.
     /// </summary>
     public void RegisterMiss(int laneIndex)
-    {
+    {        
+        if (skipMiss) return;   // for testing
         OnNoteMissEvent?.Invoke(laneIndex);
     }
 
