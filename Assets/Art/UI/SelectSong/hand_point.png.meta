@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a14e8ad49a701324c9760adb09b5356b
+guid: 28d9b4abf6b0b264f9750267bb43040e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9055209444761960153
-    second: CatPawn_0
+      213: 1574497776588965693
+    second: hand_point_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CatPawn_0
+      name: hand_point_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 75
-        width: 1006
-        height: 888
+        x: 0
+        y: 0
+        width: 198
+        height: 197
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9de7cc173019aad70800000000000000
-      internalID: 9055209444761960153
+      spriteID: d374a31c26db9d510800000000000000
+      internalID: 1574497776588965693
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CatPawn_0: 9055209444761960153
+      hand_point_0: 1574497776588965693
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -19,35 +19,7 @@ public class CatMoveController : MonoBehaviour
     private float initialY;
     private float initialZ;
 
-    // Static registry and global index property for CandyMover hit detection integration
-    private static readonly List<CatMoveController> activeCats = new List<CatMoveController>();
     public int CurrentGlobalLaneIndex => laneStartIndex + currentLaneIndex;
-
-    void OnEnable()
-    {
-        if (!activeCats.Contains(this))
-            activeCats.Add(this);
-    }
-
-    void OnDisable()
-    {
-        activeCats.Remove(this);
-    }
-
-    /// <summary>
-    /// Checks if any active cat is currently standing on the specified global lane index.
-    /// </summary>
-    public static bool IsLaneCaught(int laneIndex)
-    {
-        foreach (var cat in activeCats)
-        {
-            if (cat != null && cat.CurrentGlobalLaneIndex == laneIndex)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     void Start()
     {

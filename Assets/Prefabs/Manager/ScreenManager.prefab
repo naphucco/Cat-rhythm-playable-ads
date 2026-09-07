@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1095141832757942778}
   - component: {fileID: 2057152911276718898}
   - component: {fileID: 8325502921007191811}
-  - component: {fileID: 2927926163569389016}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -47,9 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac7660e62f98e9a46aa2efdb2c45f016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoseScreenController
+  selectSongMenu: {fileID: 0}
   holeEffect: {fileID: 2057152911276718898}
   handEffect: {fileID: 8325502921007191811}
-  buttonEffect: {fileID: 2927926163569389016}
   delayBeforeClose: 1.2
 --- !u!114 &2057152911276718898
 MonoBehaviour:
@@ -82,22 +81,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HandAppearEffect
   handRect: {fileID: 0}
   appearDuration: 0.6
-  holdDuration: 0.5
+  holdDuration: 0.3
   shrinkDuration: 0.3
   startScale: {x: 0, y: 0, z: 0}
   peakScale: {x: 1.2, y: 1.2, z: 1.2}
   endScale: {x: 0, y: 0, z: 0}
---- !u!114 &2927926163569389016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd92191e1103fd14fb62397134ccce33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ButtonFadeEffect
-  buttonGroup: {fileID: 0}
-  duration: 0.4

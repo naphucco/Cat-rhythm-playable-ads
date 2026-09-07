@@ -83,7 +83,7 @@ public class CandyMover : MonoBehaviour
         if (!hasPassedHitLine && currentSongTimer >= targetArrivalTime)
         {
             hasPassedHitLine = true;
-            if (CatMoveController.IsLaneCaught(laneIndex))
+            if (CatManager.Instance != null && CatManager.Instance.IsLaneCaught(laneIndex))
             {
                 RhythmController.Instance?.RegisterHit(laneIndex, candyId);
                 Deactivate();

@@ -68,12 +68,9 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    /// <summary>
-    /// Public method called by UI button on the Win screen to proceed to song selection.
-    /// </summary>
     public void ProceedToPickNextSong()
     {
-        if (currentState != GameState.Win) return;
+        if (currentState != GameState.Win && currentState != GameState.Lose) return;
         SetState(GameState.PickNextSong);
     }
 
