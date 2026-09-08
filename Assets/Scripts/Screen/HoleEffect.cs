@@ -46,9 +46,12 @@ public class HoleEffect : MonoBehaviour
 
     private void OnDestroy()
     {
+        DOTween.Kill(this);
+
         if (holeMaterial != null)
         {
             Destroy(holeMaterial);
+            holeMaterial = null;
         }
     }
 }

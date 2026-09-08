@@ -37,7 +37,6 @@ public class RipplePulse : MonoBehaviour
 
     private void OnNoteHit(int laneIndex, ObjectType candyType)
     {
-        Debug.Log($"[RipplePulse] OnNoteHit: lane={laneIndex}, candyType={candyType}");
         if (candyType == ObjectType.Lollipop_Long)
         {
             TriggerRipple();

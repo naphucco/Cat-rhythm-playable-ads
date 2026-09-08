@@ -8,12 +8,13 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
     private static bool _isQuitting = false;
+    private static bool _isReloading = false;
 
     public static T Instance
     {
         get
         {
-            if (_isQuitting)
+            if (_isQuitting || _isReloading)
                 return null;
 
             if (_instance == null && Application.isPlaying)
@@ -31,15 +32,24 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
+        _isReloading = false;
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         _instance = this as T;
-        
         RegisterForCleanup();
     }
+
 
     protected virtual void OnDestroy()
     {
         if (_instance == this as T)
+        {
             _instance = null;
+            _isReloading = true;
+        }
     }
 
     private static void RegisterForCleanup()
@@ -48,7 +58,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         _registered = true;
 
         Application.quitting += OnApplicationQuitting;
-        
+
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 #endif
