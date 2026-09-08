@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1704905085434649044
+--- !u!1 &3231748214720083518
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,13 +8,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8203249273124774317}
-  - component: {fileID: 1095141832757942778}
-  - component: {fileID: 2057152911276718898}
-  - component: {fileID: 8325502921007191811}
-  - component: {fileID: 2196533589817209813}
-  - component: {fileID: 3810158657458103012}
-  - component: {fileID: 4198318747821225399}
+  - component: {fileID: 2419543327361147688}
+  - component: {fileID: 2699420832659362599}
+  - component: {fileID: 5426856303617467695}
+  - component: {fileID: 2878923952044305318}
+  - component: {fileID: 280713941127154329}
+  - component: {fileID: 2330899641715744937}
+  - component: {fileID: 8511578430513584548}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -22,13 +22,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8203249273124774317
+--- !u!4 &2419543327361147688
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -37,30 +37,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1095141832757942778
+--- !u!114 &2699420832659362599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac7660e62f98e9a46aa2efdb2c45f016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoseScreenController
   selectSongMenu: {fileID: 0}
-  selectSongAnimation: {fileID: 2196533589817209813}
-  holeEffect: {fileID: 2057152911276718898}
-  handEffect: {fileID: 8325502921007191811}
+  selectSongAnimation: {fileID: 280713941127154329}
+  holeEffect: {fileID: 5426856303617467695}
+  handEffect: {fileID: 2878923952044305318}
   delayBeforeClose: 1.2
---- !u!114 &2057152911276718898
+--- !u!114 &5426856303617467695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a098248b94e6afa48a2f8fa0044ee1f0, type: 3}
@@ -71,13 +71,13 @@ MonoBehaviour:
   endSize: {x: 0.01, y: 0.01, z: 0, w: 0}
   closeDuration: 0.8
   openDuration: 0.6
---- !u!114 &8325502921007191811
+--- !u!114 &2878923952044305318
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86916b575780da2459eecc107e9e3e60, type: 3}
@@ -90,34 +90,34 @@ MonoBehaviour:
   startScale: {x: 0, y: 0, z: 0}
   peakScale: {x: 1.2, y: 1.2, z: 1.2}
   endScale: {x: 0, y: 0, z: 0}
---- !u!114 &2196533589817209813
+--- !u!114 &280713941127154329
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7597f90885547742b5b35555ec45ba2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ba89ed01f4097342ba5304aca30f3f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectSongLoop
   handImage: {fileID: 0}
   song1Image: {fileID: 0}
   song2Image: {fileID: 0}
-  moveDuration: 1.2
-  punchDuration: 0.8
+  moveDuration: 0.8
+  punchDuration: 0.6
   handZoomScale: 0.8
-  cardZoomScale: 1.1
+  cardZoomScale: 1.2
   handPunchAngle: 30
-  fingerOffset: {x: 32, y: -64}
---- !u!114 &3810158657458103012
+  fingerOffset: {x: 32, y: -24}
+--- !u!114 &2330899641715744937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f6cb65dc1ce27488e2cfaf61ad62f5, type: 3}
@@ -131,13 +131,13 @@ MonoBehaviour:
   landscapeMoveDistance: 50
   moveDuration: 0.6
   fadeDuration: 0.4
---- !u!114 &4198318747821225399
+--- !u!114 &8511578430513584548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704905085434649044}
+  m_GameObject: {fileID: 3231748214720083518}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dbcbac3287a7c14695cf4812a967078, type: 3}
@@ -149,3 +149,5 @@ MonoBehaviour:
   - {fileID: 0}
   heartFillSprite: {fileID: 5228190193396551231, guid: 646aa9178f445c84c8d8ce492a3c5104, type: 3}
   heartEmptySprite: {fileID: 8410953745117080807, guid: 0197d8109b42b5b4dbc0581d234536df, type: 3}
+  punchScaleAmount: 0.3
+  animationDuration: 0.3

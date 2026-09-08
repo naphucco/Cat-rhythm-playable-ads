@@ -1,7 +1,9 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class SelectSongLoop : MonoBehaviour
+public class SelectSongScreen : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private RectTransform handImage;
@@ -19,6 +21,38 @@ public class SelectSongLoop : MonoBehaviour
     [SerializeField] private Vector2 fingerOffset = Vector2.zero;
 
     private Sequence loopSequence;
+
+    private void Start()
+    {
+        Button btn1 = song1Image.GetComponent<Button>();
+        Button btn2 = song2Image.GetComponent<Button>();
+
+        if (btn1 != null)
+        {
+            btn1.onClick.AddListener(() =>
+            {
+                Debug.Log("=== SONG 1 CLICKED ===");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
+        }
+        else
+        {
+            Debug.LogWarning("song1Image has no Button component!");
+        }
+
+        if (btn2 != null)
+        {
+            btn2.onClick.AddListener(() =>
+            {
+                Debug.Log("=== SONG 2 CLICKED ===");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            });
+        }
+        else
+        {
+            Debug.LogWarning("song2Image has no Button component!");
+        }
+    }
 
     public void PlaySelectLoop()
     {
@@ -76,5 +110,10 @@ public class SelectSongLoop : MonoBehaviour
     private void OnDestroy()
     {
         loopSequence?.Kill();
+    }
+
+    public void SelectSong()
+    {
+        Debug.Log("seeeeeeeeeeee");
     }
 }

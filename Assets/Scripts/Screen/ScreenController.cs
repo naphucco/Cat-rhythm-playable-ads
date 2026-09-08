@@ -5,7 +5,7 @@ using System;
 public class ScreenController : MonoBehaviour
 {
     [SerializeField] private GameObject selectSongMenu;
-    [SerializeField] private SelectSongLoop selectSongAnimation;
+    [SerializeField] private SelectSongScreen selectSongAnimation;
 
     [Header("Effects")]
     [SerializeField] private HoleEffect holeEffect;
