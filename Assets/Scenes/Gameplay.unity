@@ -617,6 +617,7 @@ GameObject:
   - component: {fileID: 889878028}
   - component: {fileID: 889878031}
   - component: {fileID: 889878029}
+  - component: {fileID: 889878032}
   m_Layer: 0
   m_Name: MainBackground
   m_TagString: Untagged
@@ -669,7 +670,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: aaf34b07922cbf4489f6a3a45b62cc5b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -736,6 +737,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889878025}
   m_CullTransparentMesh: 1
+--- !u!114 &889878032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889878025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46fca512c8617f24ab7c14c572029001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RipplePulse
+  backgroundMaterial: {fileID: 2100000, guid: aaf34b07922cbf4489f6a3a45b62cc5b, type: 2}
+  pulseDuration: 0.7
+  maxRippleTime: 3
 --- !u!224 &970792025 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6504976327176738663, guid: 8a847b54747bc174abcf915b36810015, type: 3}
@@ -6417,10 +6433,6 @@ PrefabInstance:
     - target: {fileID: 1319443513305965773, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
-      propertyPath: maxLives
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: m_LocalPosition.x

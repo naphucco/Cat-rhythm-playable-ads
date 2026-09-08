@@ -100,6 +100,21 @@ Presentation layer (UI, CatAnimationController, TutorialController, ScoreManager
 
 * **Future Improvement**: Dynamic orientation switching could be implemented by adding an orientation change listener and reapplying responsive offsets. However, this would require additional UI state management and is not prioritized for Playable Ads where session duration is short and orientation is typically locked by the ad network.
 
+### G. Special Note (Lollipop) & Ripple Effect
+
+* **Special Note Configuration**:
+  * A single note can be designated as a "lollipop" by its **index in the JSON chart** (`specialNoteIndex` in `RhythmController`). This avoids modifying JSON or relying on imprecise timing values (`ta`).
+  * When hit, it triggers:
+    - Visual: **ripple distortion effect** on the background (custom shader `BackgroundDistortion` with Gaussian ring).
+    - Audio: **water drop SFX** (`AudioManager.PlayWaterDrop()`).
+
+* **Implementation**:
+  - `RhythmController.SpawnNote()` checks `specialNoteIndex` and overrides candy type to `Lollipop_Long`.
+  - `RipplePulse` listens to `OnNoteHitEvent`, triggers ripple animation when `candyType == Lollipop_Long`.
+  - `AudioManager` listens to same event, plays water drop SFX.
+
+* **Performance**: Shader runs on GPU, no grab pass or full-screen pass → lightweight and WebGL-friendly.
+
 ---
 
 ## 3. Project Structure

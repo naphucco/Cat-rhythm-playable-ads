@@ -9,7 +9,8 @@ public class AudioManager : Singleton<AudioManager>
     [Header("SFX")]
     [SerializeField] private AudioSource sfxAudioSource;
     [SerializeField] private AudioClip crySound;
-    [SerializeField] private AudioClip mooewSound; // Added clip for win/mooew sound
+    [SerializeField] private AudioClip mooewSound;
+    [SerializeField] private AudioClip waterDropSound;
 
     public bool IsPlaying => songAudioSource != null && songAudioSource.isPlaying;
     public float CurrentAudioTime => songAudioSource != null ? songAudioSource.time : 0f;
@@ -18,15 +19,14 @@ public class AudioManager : Singleton<AudioManager>
 
     private void OnEnable()
     {
-        // Safe subscription: waits for RhythmController to be ready,
-        // auto-disposes when this GameObject is destroyed.
         _subscription = this.WhenReady(() => RhythmController.Instance)
             .Subscribe(this, controller =>
             {
                 controller.OnSongPlayRequested += PlaySong;
                 controller.OnSongStopRequested += StopSong;
                 controller.OnGameLose += PlayCrySound;
-                controller.OnGameWin += PlayMooewSound; // Subscribed to win event
+                controller.OnGameWin += PlayMooewSound;
+                controller.OnNoteHitEvent += OnNoteHit;
             })
             .AddTo(this);
     }
@@ -36,11 +36,19 @@ public class AudioManager : Singleton<AudioManager>
         _subscription?.Dispose();
     }
 
+    // === HANDLER ===
+    private void OnNoteHit(int laneIndex, ObjectType candyType)
+    {
+        if (candyType == ObjectType.Lollipop_Long)
+        {
+            PlayWaterDrop();
+        }
+    }
+
+    // === EXISTING METHODS ===
     public void PlaySong()
     {
-        if (songAudioSource == null)
-            return;
-
+        if (songAudioSource == null) return;
         songAudioSource.Play();
     }
 
@@ -65,6 +73,14 @@ public class AudioManager : Singleton<AudioManager>
         if (sfxAudioSource != null && mooewSound != null)
         {
             sfxAudioSource.PlayOneShot(mooewSound);
+        }
+    }
+
+    public void PlayWaterDrop()
+    {
+        if (sfxAudioSource != null && waterDropSound != null)
+        {
+            sfxAudioSource.PlayOneShot(waterDropSound);
         }
     }
 }

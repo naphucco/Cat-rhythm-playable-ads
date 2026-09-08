@@ -23,6 +23,9 @@ public class RhythmController : Singleton<RhythmController>
     [Tooltip("JSON TextAsset containing the exported MIDI song chart data.")]
     [SerializeField] private TextAsset jsonChartFile;
 
+    [Header("Special Candy (by Note Index)")]
+    [SerializeField] private int specialNoteIndex = -1;
+
     [Tooltip("Viewport Y position for the absolute bottom screen where missed candies disappear.")]
     [SerializeField] private float missViewportY = 0.0f;
 
@@ -150,6 +153,13 @@ public class RhythmController : Singleton<RhythmController>
 
         // Determine the visual prefab type based on lane index, velocity, and duration
         ObjectType candyID = ResolveCandyID(laneIndex, note.v, note.d);
+
+        // spawn specical
+        int noteIndex = currentIndex - 1;
+        if (specialNoteIndex >= 0 && noteIndex == specialNoteIndex)
+        {
+            candyID = ObjectType.Lollipop_Long;
+        }
 
         // Fetch spawn position at the top of the screen aligned with the correct lane X
         Vector3 spawnPosition = LaneManager.Instance.GetSpawnPosition(laneIndex);
