@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8325502921007191811}
   - component: {fileID: 2196533589817209813}
   - component: {fileID: 3810158657458103012}
+  - component: {fileID: 4198318747821225399}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -125,11 +126,26 @@ MonoBehaviour:
   tutorialContainer: {fileID: 0}
   leftGuide: {fileID: 0}
   rightGuide: {fileID: 0}
-  dialogRect: {fileID: 0}
   dialogImage: {fileID: 0}
-  portraitDialogPos: {x: 0, y: -30}
   portraitMoveDistance: 30
-  landscapeDialogPos: {x: 0, y: 50}
   landscapeMoveDistance: 50
   moveDuration: 0.6
   fadeDuration: 0.4
+--- !u!114 &4198318747821225399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704905085434649044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dbcbac3287a7c14695cf4812a967078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthDisplayController
+  heartsContainer: {fileID: 0}
+  heartImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  heartFillSprite: {fileID: 5228190193396551231, guid: 646aa9178f445c84c8d8ce492a3c5104, type: 3}
+  heartEmptySprite: {fileID: 8410953745117080807, guid: 0197d8109b42b5b4dbc0581d234536df, type: 3}

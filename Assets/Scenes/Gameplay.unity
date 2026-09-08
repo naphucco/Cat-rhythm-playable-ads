@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &32722288 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4182629639422176273, guid: 78743aceb99975349a8f2ad372312949, type: 3}
+  m_PrefabInstance: {fileID: 8577457422929679953}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &73233871 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7611828831305173676, guid: 8a847b54747bc174abcf915b36810015, type: 3}
@@ -415,11 +426,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6494084353455763095, guid: 8a847b54747bc174abcf915b36810015, type: 3}
   m_PrefabInstance: {fileID: 2302256365316391853}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &597697603 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2362840921855259133, guid: dae028cf13543a04eabc975eb3177a21, type: 3}
-  m_PrefabInstance: {fileID: 146317758691243486}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &628624497
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +633,7 @@ RectTransform:
   m_GameObject: {fileID: 889878025}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.92592597, y: 0.92592597, z: 1}
+  m_LocalScale: {x: 0.5208334, y: 0.5208334, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -686,7 +692,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7536193595675217356, guid: a888cf751fc2d754db2030aadbd3931d, type: 3}
+  m_Sprite: {fileID: -4500712686193554759, guid: 422bf0d324536e541af5cd670318ea5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -834,7 +840,7 @@ GameObject:
   - component: {fileID: 1282356966}
   - component: {fileID: 1282356965}
   m_Layer: 5
-  m_Name: Canvas_Portrait
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -992,6 +998,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!114 &1579008790 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4576385418835439011, guid: 78743aceb99975349a8f2ad372312949, type: 3}
+  m_PrefabInstance: {fileID: 8577457422929679953}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!4 &1639672335 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
@@ -1105,6 +1122,11 @@ RectTransform:
 --- !u!1 &2086830668 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1818425811252397460, guid: 78743aceb99975349a8f2ad372312949, type: 3}
+  m_PrefabInstance: {fileID: 8577457422929679953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2086830669 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6054742989907051326, guid: 78743aceb99975349a8f2ad372312949, type: 3}
   m_PrefabInstance: {fileID: 8577457422929679953}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &2112965878 stripped
@@ -1484,6 +1506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2374829854622134987, guid: b260ec742969903499557347c41ba50b, type: 3}
+      propertyPath: maxLives
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2931381589358150826, guid: b260ec742969903499557347c41ba50b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1574,10 +1600,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1917037858}
     - target: {fileID: 3810158657458103012, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
-      propertyPath: dialogRect
-      value: 
-      objectReference: {fileID: 597697603}
-    - target: {fileID: 3810158657458103012, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
       propertyPath: rightGuide
       value: 
       objectReference: {fileID: 975340377}
@@ -1589,6 +1611,18 @@ PrefabInstance:
       propertyPath: tutorialContainer
       value: 
       objectReference: {fileID: 706075337}
+    - target: {fileID: 4198318747821225399, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
+      propertyPath: heartsContainer
+      value: 
+      objectReference: {fileID: 2086830669}
+    - target: {fileID: 4198318747821225399, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
+      propertyPath: 'heartImages.Array.data[0]'
+      value: 
+      objectReference: {fileID: 32722288}
+    - target: {fileID: 4198318747821225399, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
+      propertyPath: 'heartImages.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1579008790}
     - target: {fileID: 8203249273124774317, guid: c451e94f5044a43409b09169a464d3c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -29,10 +29,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        // Subscribe to RhythmController events for Miss, Win, and Lose conditions
+        // Subscribe to RhythmController events for Win, and Lose conditions
         if (RhythmController.Instance != null)
         {
-            RhythmController.Instance.OnNoteMissEvent += HandleNoteMiss;
             RhythmController.Instance.OnGameWin += HandleGameWin;
             RhythmController.Instance.OnGameLose += HandleGameLose;
         }
@@ -47,7 +46,6 @@ public class GameManager : Singleton<GameManager>
 
         if (RhythmController.Instance != null)
         {
-            RhythmController.Instance.OnNoteMissEvent -= HandleNoteMiss;
             RhythmController.Instance.OnGameWin -= HandleGameWin;
             RhythmController.Instance.OnGameLose -= HandleGameLose;
         }
@@ -72,16 +70,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (currentState != GameState.Win && currentState != GameState.Lose) return;
         SetState(GameState.PickNextSong);
-    }
-
-    private void HandleNoteMiss(int laneIndex)
-    {
-        if (currentState != GameState.Playing) return;
-
-        if (RhythmController.Instance != null)
-        {
-            RhythmController.Instance.TriggerLose();
-        }
     }
 
     private void HandleGameWin()

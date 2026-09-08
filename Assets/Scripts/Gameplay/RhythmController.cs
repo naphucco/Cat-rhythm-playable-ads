@@ -12,6 +12,10 @@ public class RhythmController : Singleton<RhythmController>
     [SerializeField] private bool autoStart;
     [SerializeField] private float winDelay = 0.3f;
 
+    [Header("Lives Configuration")]
+    [SerializeField] private int maxLives = 3;
+    private int currentLives;
+
     [Header("Data Configuration")]
     [Tooltip("Reference to the global SongSettings ScriptableObject asset containing thresholds and timings.")]
     [SerializeField] private SongSettings songSettings;
@@ -46,10 +50,18 @@ public class RhythmController : Singleton<RhythmController>
     public event Action<int, ObjectType> OnNoteHitEvent;
     public event Action<int> OnNoteMissEvent;
 
+    // Event fired when lives change (passes currentLives, maxLives)
+    public event Action<int, int> OnLivesChangedEvent;
+
     /// <summary>
     /// Exposes the synchronized song timer publicly for external components.
     /// </summary>
     public float SongTimer => songTimer;
+
+    /// <summary>
+    /// Exposes current lives publicly.
+    /// </summary>
+    public int CurrentLives => currentLives;
 
     private void Start()
     {
@@ -83,6 +95,9 @@ public class RhythmController : Singleton<RhythmController>
         {
             yield return null;
         }
+
+        currentLives = maxLives;
+        OnLivesChangedEvent?.Invoke(currentLives, maxLives);
 
         songTimer = -songSettings.noteTravelTime;
         currentIndex = 0;
@@ -199,9 +214,19 @@ public class RhythmController : Singleton<RhythmController>
     /// Callback executed when a candy passes the hit line without being caught and reaches the bottom.
     /// </summary>
     public void RegisterMiss(int laneIndex)
-    {        
-        if (skipMiss) return;   // for testing
+    {
+        if (skipMiss || isGameEnded) return; // for testing
+
         OnNoteMissEvent?.Invoke(laneIndex);
+
+        // Reduce life on miss
+        currentLives = Mathf.Max(0, currentLives - 1);
+        OnLivesChangedEvent?.Invoke(currentLives, maxLives);
+
+        if (currentLives <= 0)
+        {
+            TriggerLose();
+        }
     }
 
     /// <summary>
