@@ -21,9 +21,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 _instance = FindFirstObjectByType<T>();
                 if (_instance == null)
                 {
-                    GameObject go = new GameObject(typeof(T).Name);
-                    go.hideFlags = HideFlags.DontSave;
-                    _instance = go.AddComponent<T>();
+                    Debug.LogError($"[Singleton] {typeof(T).Name} not found in scene!");
+                    return null;
                 }
             }
             return _instance;
@@ -32,14 +31,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         _instance = this as T;
         
-        // Đăng ký cleanup khi quit
         RegisterForCleanup();
     }
 

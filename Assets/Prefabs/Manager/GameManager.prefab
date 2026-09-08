@@ -55,7 +55,7 @@ MonoBehaviour:
   specialNoteIndex: 44
   missViewportY: 0.25
   cat1MaxLaneIndex: 1
-  skipMiss: 1
+  skipMiss: 0
 --- !u!114 &4342415825757706530
 MonoBehaviour:
   m_ObjectHideFlags: 0

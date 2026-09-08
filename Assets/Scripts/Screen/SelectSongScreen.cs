@@ -31,26 +31,16 @@ public class SelectSongScreen : MonoBehaviour
         {
             btn1.onClick.AddListener(() =>
             {
-                Debug.Log("=== SONG 1 CLICKED ===");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             });
-        }
-        else
-        {
-            Debug.LogWarning("song1Image has no Button component!");
         }
 
         if (btn2 != null)
         {
             btn2.onClick.AddListener(() =>
             {
-                Debug.Log("=== SONG 2 CLICKED ===");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             });
-        }
-        else
-        {
-            Debug.LogWarning("song2Image has no Button component!");
         }
     }
 
